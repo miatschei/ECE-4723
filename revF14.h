@@ -8,12 +8,18 @@
 // Lab 2 Definitions and Macros
 #define CONFIG_LED1()     CONFIG_RF4_AS_DIG_OUTPUT()
 #define LED1              (_LATF4)
+#define LED1_OFF()        (_LATF4 = 0)
+#define LED1_ON()         (_LATF4 = 1)
 
 #define CONFIG_LED2()     CONFIG_RB14_AS_DIG_OUTPUT()
 #define LED2              (_LATB14) 
+#define LED2_OFF()        (_LATB14 = 0)
+#define LED2_ON()         (_LATB14 = 1)
 
 #define CONFIG_LED3()     CONFIG_RB15_AS_DIG_OUTPUT()
 #define LED3              (_LATB15) 
+#define LED3_OFF()        (_LATB15 = 1)
+#define LED3_ON()         (_LATB15 = 0)
 
 #define CONFIG_SW1()       {\
                             CONFIG_RB13_AS_DIG_INPUT();\
