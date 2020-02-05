@@ -6,10 +6,10 @@
 #include "esos_pic24.h"
 
 // Road States
-#define N_S 0
-#define E_W 1
+#define N_S        0
+#define E_W        1
 
-// Light States
+// Light STates
 #define RED 0
 #define AMBER 1
 #define GREEN 2
@@ -69,22 +69,51 @@ ESOS_USER_TASK(switch_state){
 ESOS_USER_TASK(traffic_light){
     ESOS_TASK_BEGIN();
     while(TRUE){
-        // first color 0
+        if(SW1_RELEASED){
+        // Normal conditions
+        // first color
         SET_RED(N_S);
         SET_GREEN(E_W);
         ESOS_TASK_WAIT_TICKS(10000);
-        // second color 1
+        // second color
         SET_RED(N_S);
         SET_AMBER(E_W);
         ESOS_TASK_WAIT_TICKS(3000);
-        // third color 2
+        // third color
         SET_GREEN(N_S);
         SET_RED(E_W);
         ESOS_TASK_WAIT_TICKS(10000);
-        // fourth color 3
+        // fourth color
         SET_AMBER(N_S);
         SET_RED(E_W);
         ESOS_TASK_WAIT_TICKS(3000);
+        } else {
+            // Rush Hour conditions
+            // first color
+            SET_RED(N_S);
+            SET_GREEN(E_W);
+            ESOS_TASK_WAIT_TICKS(30000);
+            // second color
+            SET_RED(N_S);
+            SET_AMBER(E_W);
+            ESOS_TASK_WAIT_TICKS(3000);
+            // third color
+            SET_RED(N_S);
+            SET_RED(E_W);
+            ESOS_TASK_WAIT_TICKS(1000);
+            // fourth color
+            SET_GREEN(N_S);
+            SET_RED(E_W);
+            ESOS_TASK_WAIT_TICKS(30000);
+            // fifth color
+            SET_AMBER(N_S);
+            SET_RED(E_W);
+            ESOS_TASK_WAIT_TICKS(3000);
+            // sixth color
+            SET_RED(N_S);
+            SET_RED(E_W);
+            ESOS_TASK_WAIT_TICKS(1000);
+        }
     }
     ESOS_TASK_END();
 }
@@ -101,8 +130,9 @@ void user_init(void){
     LED2_OFF();
     LED3_OFF();
     
-    // configure switch
+    // configure switches
     CONFIG_SW3();
+    CONFIG_SW1();
     
     // register user tasks
     esos_RegisterTask(switch_state);
