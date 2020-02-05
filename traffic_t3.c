@@ -6,13 +6,14 @@
 #include "esos_pic24.h"
 
 // Road States
-#define N_S 0
-#define E_W 1
+#define N_S        0
+#define E_W        1
 
 // Light States
-#define RED 0
-#define AMBER 1
-#define GREEN 2
+#define RED          0
+#define AMBER        1
+#define GREEN        2
+#define TURN         3
 
 // State storage
 uint8_t state[2];
@@ -35,11 +36,17 @@ uint8_t state[2];
                           LED2_OFF(); \
                           LED3_ON(); \
                         }
+#define TOGGLE_GREEN() {\
+                         LED1_OFF(); \
+                         LED2_OFF(); \
+                         LED3 = !LED3; \
+                        }
 
 // Macro functions for setting lights to given state
 #define SET_RED(s) state[s] = RED;
 #define SET_AMBER(s) state[s] = AMBER;
 #define SET_GREEN(s) state[s] = GREEN;
+#define SET_TURN(s)  state[s] = TURN;
 
 // Display lights for given road state
 #define DISPLAY_LIGHTS(s)   {\
@@ -69,24 +76,78 @@ ESOS_USER_TASK(switch_state){
 ESOS_USER_TASK(traffic_light){
     ESOS_TASK_BEGIN();
     while(TRUE){
-        // first color 0
+        if(SW1_RELEASED){
+        // Normal conditions
+        // first color
+        SET_RED(N_S);
+        SET_TURN(E_W);
+        ESOS_TASK_WAIT_TICKS(10000);
+        // second color
         SET_RED(N_S);
         SET_GREEN(E_W);
         ESOS_TASK_WAIT_TICKS(10000);
-        // second color 1
+        // third color
         SET_RED(N_S);
         SET_AMBER(E_W);
         ESOS_TASK_WAIT_TICKS(3000);
-        // third color 2
+        // fourth color
+        SET_TURN(N_S);
+        SET_RED(E_W);
+        ESOS_TASK_WAIT_TICKS(10000);
+        // fifth color
         SET_GREEN(N_S);
         SET_RED(E_W);
         ESOS_TASK_WAIT_TICKS(10000);
-        // fourth color 3
+        // sixth color
         SET_AMBER(N_S);
         SET_RED(E_W);
         ESOS_TASK_WAIT_TICKS(3000);
+        } else {
+            // Rush Hour conditions
+            // first color
+            SET_RED(N_S);
+            SET_TURN(E_W);
+            ESOS_TASK_WAIT_TICKS(10000);
+            // second color
+            SET_RED(N_S);
+            SET_GREEN(E_W);
+            ESOS_TASK_WAIT_TICKS(30000);
+            // third color
+            SET_RED(N_S);
+            SET_AMBER(E_W);
+            ESOS_TASK_WAIT_TICKS(3000);
+            // fourth color
+            SET_RED(N_S);
+            SET_RED(E_W);
+            ESOS_TASK_WAIT_TICKS(1000);
+            // fifth color
+            SET_TURN(N_S);
+            SET_RED(E_W);
+            ESOS_TASK_WAIT_TICKS(10000);
+            // sixth color
+            SET_GREEN(N_S);
+            SET_RED(E_W);
+            ESOS_TASK_WAIT_TICKS(30000);
+            // seventh color
+            SET_AMBER(N_S);
+            SET_RED(E_W);
+            ESOS_TASK_WAIT_TICKS(3000);
+            // eighth color
+            SET_RED(N_S);
+            SET_RED(E_W);
+            ESOS_TASK_WAIT_TICKS(1000);
+        }
     }
     ESOS_TASK_END();
+}
+
+// timer for toggling turn signal
+ESOS_USER_TIMER(turn_signal){
+        if((SW3_PRESSED && state[E_W] == TURN) || (SW3_RELEASED && state[N_S] == TURN)){
+            LED1_OFF();
+            LED2_OFF();
+            TOGGLE_GREEN();
+        }
 }
 
 // user init function
@@ -101,10 +162,12 @@ void user_init(void){
     LED2_OFF();
     LED3_OFF();
     
-    // configure switch
+    // configure switches
     CONFIG_SW3();
+    CONFIG_SW1();
     
     // register user tasks
     esos_RegisterTask(switch_state);
     esos_RegisterTask(traffic_light);
+    esos_RegisterTimer(turn_signal, 125);
 }
