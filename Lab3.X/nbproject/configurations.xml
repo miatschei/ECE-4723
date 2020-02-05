@@ -21,6 +21,7 @@
         <itemPath>../../esos/include/esos_cb.h</itemPath>
         <itemPath>../../esos/include/esos_mail.h</itemPath>
         <itemPath>../revF14.h</itemPath>
+        <itemPath>../esos_f14ui.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="PIC24" projectFiles="true">
         <itemPath>../../lib/include/pic24_all.h</itemPath>
@@ -54,9 +55,10 @@
         <itemPath>../../esos/src/pic24/esos_pic24_spi.c</itemPath>
         <itemPath>../../esos/src/esos_cb.c</itemPath>
         <itemPath>../../esos/src/esos_mail.c</itemPath>
+        <itemPath>../esos_f14ui.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f3" displayName="Main Project Files" projectFiles="true">
-        <itemPath>../traffic_t1.c</itemPath>
+        <itemPath>../lab3.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="PIC24" projectFiles="true">
         <itemPath>../../lib/src/pic24_clockfreq.c</itemPath>
