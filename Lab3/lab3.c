@@ -4,4 +4,16 @@
 #include "revF14.h"
 #include "esos.h"
 #include "esos_pic24.h"
-#include "esos_f14ui.h"
+//#include "esos_f14ui.h"
+
+ESOS_USER_TASK(lab_3){
+    ESOS_TASK_BEGIN();
+    while(TRUE){
+        ESOS_TASK_WAIT_TICKS(300);
+    }
+    ESOS_TASK_END();
+}
+
+void user_init(){
+    esos_RegisterTask( lab_3 );
+}

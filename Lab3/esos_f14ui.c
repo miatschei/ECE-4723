@@ -7,6 +7,8 @@
  * ****************************************************************/
 #include "esos_f14ui.h"
 #include "revF14.h"
+#include "esos.h"
+#include "esos_pic24.h"
 
 // PRIVATE FUNCTIONS
 inline void _esos_uiF14_setRPGCounter (uint16_t newValue) {
@@ -79,33 +81,32 @@ inline bool esos_uiF14_isRpgTurning ( void ) {
 
 inline bool esos_uiF14_isRpgTurningSlow( void ) {
   // not yet implemented
+  return 0; //placeholder return statements
 }
 
 inline bool esos_uiF14_isRpgTurningMedium( void ) {
   // not yet implemented
+  return 0;
 }
 
 inline bool esos_uiF14_isRpgTurningFast( void ) {
   // not yet implemented
+  return 0;
 }
 
 inline bool esos_uiF14_isRpgTurningCW( void ) {
   // not yet implemented
+  return 0;
 }
 
 inline bool esos_uiF14_isRpgTurningCCW( void ) {
   // not yet implemented
+  return 0;
 }
 
-int16_t esos_uiF14_getRpgVelocity_i16( void ) {
+inline int16_t esos_uiF14_getRpgVelocity_i16( void ) {
   // not yet implemented
-}
-
-// UIF14 INITIALIZATION FUNCTION
-
-void config_esos_uiF14() {
-  // setup your UI implementation
-  esos_RegisterTask( __esos_uiF14_task );
+  return 0;
 }
 
 
@@ -119,3 +120,11 @@ ESOS_USER_TASK( __esos_uiF14_task ){
   }
   ESOS_TASK_END();
 }
+
+// UIF14 INITIALIZATION FUNCTION
+void user_init() {
+  // setup your UI implementation
+  esos_RegisterTask( __esos_uiF14_task );
+}
+
+

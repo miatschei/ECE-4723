@@ -97,7 +97,7 @@ inline bool esos_uiF14_isRPGTurningFast (void);
 inline bool esos_uiF14_isRPGTurningCW (void);
 inline bool esos_uiF14_isRPGTurningCCW (void);
 
-void config_esos_uiF14();
+//void user_init();
 int16_t esos_uiF14_getRPGVelocity_i16 (void);
 
 // PUBLIC API ESOS TASK MACROS
