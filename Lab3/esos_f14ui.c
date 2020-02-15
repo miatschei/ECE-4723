@@ -20,37 +20,37 @@ inline void _esos_uiF14_setLastRPGCounter (uint16_t newValue) {
 }
 
 // PUBLIC SWITCH FUNCTIONS
-inline BOOL esos_uiF14_getSW1Pressed (void) {
-    return (_st_esos_uiF14Data.b_SW1Pressed==TRUE);
+inline bool esos_uiF14_getSW1Pressed (void) {
+    return (_st_esos_uiF14Data.b_SW1Pressed==true);
 }
 
-inline BOOL esos_uiF14_getSW1Released (void) {
-    return (_st_esos_uiF14Data.b_SW1Pressed==FALSE);
+inline bool esos_uiF14_getSW1Released (void) {
+    return (_st_esos_uiF14Data.b_SW1Pressed==false);
 }
 
-inline BOOL esos_uiF14_getSW1DoublePressed (void) {
-    return (_st_esos_uiF14Data.b_SW1DoublePressed==TRUE);
+inline bool esos_uiF14_getSW1DoublePressed (void) {
+    return (_st_esos_uiF14Data.b_SW1DoublePressed==true);
 }
 
 /***** SW2 and SW3 need need similar  *****/
 
 // PUBLIC LED FUNCTIONS
 
-inline BOOL esos_uiF14_isLED1On (void) {
-    return (_st_esos_uiF14Data.b_LED1On==TRUE);
+inline bool esos_uiF14_isLED1On (void) {
+    return (_st_esos_uiF14Data.b_LED1On==true);
 }
 
-inline BOOL esos_uiF14_isLED1Off (void) {
-    return (_st_esos_uiF14Data.b_LED1On==FALSE);
+inline bool esos_uiF14_isLED1Off (void) {
+    return (_st_esos_uiF14Data.b_LED1On==false);
 }
 
 inline void esos_uiF14_turnLED1On (void) {
-    _st_esos_uiF14Data.b_LED1On = TRUE;
+    _st_esos_uiF14Data.b_LED1On = true;
     return;
 }
 
 inline void esos_uiF14_turnLED1Off (void) {
-    _st_esos_uiF14Data.b_LED1On = FALSE;
+    _st_esos_uiF14Data.b_LED1On = false;
     return;
 }
 
@@ -61,7 +61,7 @@ inline void esos_uiF14_toggleLED1 (void) {
 
 inline void esos_uiF14_flashLED1( uint16_t u16_period) {
     _st_esos_uiF14Data.u16_LED1FlashPeriod = u16_period;
-    return
+    return;
 }
 
 /****** LED2 and LED3 will need similar.  ********/
@@ -73,27 +73,27 @@ inline uint16_t esos_uiF14_getRpgValue_u16 ( void ) {
     return _st_esos_uiF14Data.u16_RPGCounter;
 }
 
-inline BOOL esos_uiF14_isRpgTurning ( void ) {
+inline bool esos_uiF14_isRpgTurning ( void ) {
     return (esos_uiF14_getRpgVelocity_i16() != 0);
 }
 
-inline BOOL esos_uiF14_isRpgTurningSlow( void ) {
+inline bool esos_uiF14_isRpgTurningSlow( void ) {
   // not yet implemented
 }
 
-inline BOOL esos_uiF14_isRpgTurningMedium( void ) {
+inline bool esos_uiF14_isRpgTurningMedium( void ) {
   // not yet implemented
 }
 
-inline BOOL esos_uiF14_isRpgTurningFast( void ) {
+inline bool esos_uiF14_isRpgTurningFast( void ) {
   // not yet implemented
 }
 
-inline BOOL esos_uiF14_isRpgTurningCW( void ) {
+inline bool esos_uiF14_isRpgTurningCW( void ) {
   // not yet implemented
 }
 
-inline BOOL esos_uiF14_isRpgTurningCCW( void ) {
+inline bool esos_uiF14_isRpgTurningCCW( void ) {
   // not yet implemented
 }
 
@@ -113,9 +113,9 @@ void config_esos_uiF14() {
 ESOS_USER_TASK( __esos_uiF14_task ){
   
   ESOS_TASK_BEGIN();
-  while(TRUE) {
+  while(true) {
     // do your UI stuff here
-    ESOS_TASK_WAIT_TICKS( __ESOS_UIF14_UI_PERIOD );
+    ESOS_TASK_WAIT_TICKS( __ESOS_UIF14_UI_PERIOD_MS );
   }
   ESOS_TASK_END();
 }

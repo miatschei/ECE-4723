@@ -9,7 +9,7 @@
 #ifndef   ESOS_UIF14_H
 #define ESOS_UIF14_H
 #include <stdbool.h>
-
+#include <stdint.h>
 // STRUCTURES
 
 typedef struct {
@@ -24,14 +24,14 @@ typedef struct {
     bool b_RPGBHigh;
     
     bool b_LED1On;
-    int u16_LED1FlashPeriod;    
+    uint16_t u16_LED1FlashPeriod;    
     bool b_LED2On;
-    int u16_LED2FlashPeriod;        
+    uint16_t u16_LED2FlashPeriod;        
     bool b_LED3On;
-    int u16_LED3FlashPeriod;        
+    uint16_t u16_LED3FlashPeriod;        
     
-    int u16_RPGCounter;
-    int u16_lastRPGCounter;
+    uint16_t u16_RPGCounter;
+    uint16_t u16_lastRPGCounter;
 } _st_esos_uiF14Data_t;
 
 // DEFINEs and CONSTANTs
@@ -51,7 +51,7 @@ void esos_ui_setRPGCounter (uint16_t);
 uint16_t esos_uiF14_getLastRPGCounter (void);
 void esos_ui_setLastRPGCounter (uint16_t);
 
-//#define ESOS_USER_TASK_uiF14_task()
+#define ESOS_USER_TASK __esos_uiF14_task
 
 // PUBLIC API FUNCTION PROTOTYPES
 
