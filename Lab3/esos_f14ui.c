@@ -5,7 +5,8 @@
  *    requires the EMBEDDED SYSTEMS target rev. F14
  * 
  * ****************************************************************/
-# include esos_f14ui.h;
+#include "esos_f14ui.h"
+#include "revF14.h"
 
 // PRIVATE FUNCTIONS
 inline void _esos_uiF14_setRPGCounter (uint16_t newValue) {
@@ -104,7 +105,7 @@ int16_t esos_uiF14_getRpgVelocity_i16( void ) {
 
 void config_esos_uiF14() {
   // setup your UI implementation
-  esos_RegisterTask( __uiF14_task );
+  esos_RegisterTask( __esos_uiF14_task );
 }
 
 
