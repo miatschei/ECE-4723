@@ -12,7 +12,7 @@
 #include <stdint.h>
 // STRUCTURES
 
-typedef struct {
+typedef struct _st_esos_uiF14Data{
     bool b_SW1Pressed;
     bool b_SW1DoublePressed;
     bool b_SW2Pressed;
@@ -40,8 +40,7 @@ typedef struct {
 #define __ESOS_UIF14_UI_PERIOD_MS       10
 
 // PRIVATE DATA 
- 
-_st_esos_uiF14Data_t _st_esos_uiF14Data;
+extern volatile _st_esos_uiF14Data_t _st_esos_uiF14Data; // declared volatile since the members of the struct are subject to change
 
 // PRIVATE FUNCTION PROTOTYPES
 
@@ -51,7 +50,7 @@ void esos_ui_setRPGCounter (uint16_t);
 uint16_t esos_uiF14_getLastRPGCounter (void);
 void esos_ui_setLastRPGCounter (uint16_t);
 
-#define ESOS_USER_TASK __esos_uiF14_task
+
 
 // PUBLIC API FUNCTION PROTOTYPES
 

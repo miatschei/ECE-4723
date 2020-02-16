@@ -6,7 +6,7 @@
 #include "esos_pic24.h"
 #include "esos_f14ui.h"
 
-ESOS_USER_TASK(lab_3){
+ESOS_USER_TASK(test){
     ESOS_TASK_BEGIN();
     while(TRUE){
         ESOS_TASK_WAIT_TICKS(300);
@@ -16,6 +16,6 @@ ESOS_USER_TASK(lab_3){
 }
 
 void user_init(){
-    config_esos_uiF14();
-    esos_RegisterTask( lab_3 );
+    //config_esos_uiF14();
+    esos_RegisterTask(test);
 }

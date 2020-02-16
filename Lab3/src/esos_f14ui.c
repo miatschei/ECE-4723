@@ -10,6 +10,8 @@
 #include "esos.h"
 #include "esos_pic24.h"
 
+volatile _st_esos_uiF14Data_t _st_esos_uiF14Data;
+
 // PRIVATE FUNCTIONS
 inline void _esos_uiF14_setRPGCounter (uint16_t newValue) {
     _st_esos_uiF14Data.u16_RPGCounter = newValue;
