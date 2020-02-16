@@ -1,10 +1,11 @@
 // ECE 4273/6473 Embedded Systems
-// Lab 2 Traffic Controller Spec 1
+// Lab 3 ESOS UI Service
 
-//#include "revF14.h"
+
 #include "esos.h"
 #include "esos_pic24.h"
 #include "esos_f14ui.h"
+#include "revF14.h"
 
 ESOS_USER_TASK(test){
     ESOS_TASK_BEGIN();
