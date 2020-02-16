@@ -41,7 +41,7 @@ typedef struct {
 
 // PRIVATE DATA 
  
-_st_esos_uiF14Data_t _st_esos_uiF14Data;
+extern volatile _st_esos_uiF14Data_t _st_esos_uiF14Data;
 
 // PRIVATE FUNCTION PROTOTYPES
 
@@ -51,7 +51,7 @@ void esos_ui_setRPGCounter (uint16_t);
 uint16_t esos_uiF14_getLastRPGCounter (void);
 void esos_ui_setLastRPGCounter (uint16_t);
 
-#define ESOS_USER_TASK __esos_uiF14_task
+
 
 // PUBLIC API FUNCTION PROTOTYPES
 
@@ -97,7 +97,7 @@ inline bool esos_uiF14_isRPGTurningFast (void);
 inline bool esos_uiF14_isRPGTurningCW (void);
 inline bool esos_uiF14_isRPGTurningCCW (void);
 
-//void user_init();
+void config_esos_uiF14();
 int16_t esos_uiF14_getRPGVelocity_i16 (void);
 
 // PUBLIC API ESOS TASK MACROS
