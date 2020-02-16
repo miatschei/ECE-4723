@@ -5,7 +5,8 @@
 
 #include "pic24_all.h"
 
-// Lab 2 Definitions and Macros
+// LED-related hardware definitions and macros
+// Do we want toggle macros for LEDs?
 #define CONFIG_LED1()     CONFIG_RF4_AS_DIG_OUTPUT()
 #define LED1              (_LATF4)
 #define LED1_ON()         (_LATF4 = 1)
@@ -21,6 +22,8 @@
 #define LED3_ON()           (_LATB15 = 0)
 #define LED3_OFF()          (_LATB15 = 1)
 
+
+// Switch-related hardware definitions and macros
 #define CONFIG_SW1()       { \
                             CONFIG_RB13_AS_DIG_INPUT(); \
                             ENABLE_RB13_PULLUP(); \
@@ -52,5 +55,17 @@
 #define SW3_RELEASED     (_RC15 == 1)
 
 
-#endif	/* REVF14_H */
+// RPG-related hardware definitions and macros
+#define RPG_A            (_RB8)
+#define RPG_B            (_RB9)
 
+#define RPG_CONFIG()     { \
+                          CONFIG_RB8_AS_DIG_INPUT();\  
+                          CONFIG_RB9_AS_DIG_INPUT();\
+                          ENABLE_RB8_PULLUP();\
+                          ENABLE_RB9_PULLUP();\
+                          DELAY_US(1);
+}
+
+
+#endif	/* REVF14_H */
