@@ -44,11 +44,11 @@ extern volatile _st_esos_uiF14Data_t _st_esos_uiF14Data; // declared volatile si
 
 // PRIVATE FUNCTION PROTOTYPES
 
-uint16_t esos_uiF14_getRPGCounter (void);
-void esos_ui_setRPGCounter (uint16_t);
+inline uint16_t _esos_uiF14_getRPGCounter (void);
+inline void _esos_ui_setRPGCounter (uint16_t);
 
-uint16_t esos_uiF14_getLastRPGCounter (void);
-void esos_ui_setLastRPGCounter (uint16_t);
+inline uint16_t _esos_uiF14_getLastRPGCounter (void);
+inline void _esos_ui_setLastRPGCounter (uint16_t);
 
 
 
