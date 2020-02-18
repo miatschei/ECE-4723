@@ -139,7 +139,7 @@ uint16_t dbnc_state = 0; // stores intermediate state change for debouncing
 uint16_t rpg_tmr = 0;    // timer count for debouncing
 
 ESOS_USER_TIMER( dbnc_rpg ){               // timer to debounce rpg input
-  if(rpg_tmr == 15){                       // if state hasnt changed for 10 ms
+  if(rpg_tmr == 10){                       // if state hasnt changed for 10 ms
     _esos_uiF14_setLastRPGCounter(_esos_uiF14_getRPGCounter());               // store old state
     _esos_uiF14_setRPGCounter(dbnc_state);               // store new state
     rpg_tmr = 0;                           // reset timer
@@ -158,7 +158,7 @@ uint16_t last_stateCheck = 0;
 int16_t dir = 0;
 int16_t last_dir = 0;
 char psz_state[16];
-ESOS_USER_TIMER(process_rpg){
+ESOS_USER_TIMER(debug_rpg){
   // check states
   stateCheck = _esos_uiF14_getRPGCounter(); 
   last_stateCheck = _esos_uiF14_getLastRPGCounter();
@@ -190,7 +190,7 @@ void config_esos_uiF14() {
 
 
   esos_RegisterTimer(dbnc_rpg, 1);
-  esos_RegisterTimer(process_rpg, 15);
+  esos_RegisterTimer(debug_rpg, 10);
 }
 
 
