@@ -35,7 +35,7 @@ inline uint16_t _esos_uiF14_getLastRPGCounter (void) {
 // PUBLIC SWITCH FUNCTIONS
 
 //SW1 ---------------------
-inline bool esos_uiF14_getSW1Pressed (void) {
+inline bool esos_uiF14_getSW1Pressed (void) {         // should be "isSW1", check all functions. Should not return a true, just the struct properties
     return (_st_esos_uiF14Data.b_SW1Pressed==true);
 }
 
