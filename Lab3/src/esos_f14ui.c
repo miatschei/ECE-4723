@@ -92,18 +92,15 @@ inline bool esos_uiF14_isRpgTurning ( void ) {
 }
 
 inline bool esos_uiF14_isRpgTurningSlow( void ) {
-  // not yet implemented
-  return 0; //placeholder return statements
+  return ((0 < abs(esos_uiF14_getRpgVelocity_i16())) && (abs(esos_uiF14_getRpgVelocity_i16()) <= 15));
 }
 
 inline bool esos_uiF14_isRpgTurningMedium( void ) {
-  // not yet implemented
-  return 0;
+  return ((15 < abs(esos_uiF14_getRpgVelocity_i16())) && (abs(esos_uiF14_getRpgVelocity_i16()) <= 50));
 }
 
 inline bool esos_uiF14_isRpgTurningFast( void ) {
-  // not yet implemented
-  return 0;
+  return (50 < abs(esos_uiF14_getRpgVelocity_i16()));
 }
 
 inline bool esos_uiF14_isRpgTurningCW( ) {
@@ -129,53 +126,37 @@ inline bool esos_uiF14_isRpgTurningCCW( void ) {
 }
 
 inline int16_t esos_uiF14_getRpgVelocity_i16( void ) {
-  // not yet implemented
-  return 0;
+  if(esos_uiF14_isRpgTurningCW()){ // positive rotation
+    return (int16_t) _st_esos_uiF14Data.u16_RPGVelocity;
+  } else if(esos_uiF14_isRpgTurningCCW()){ // negtive rotation
+    return (int16_t) _st_esos_uiF14Data.u16_RPGVelocity * -1;
+  } else return 0; // invalid turning
 }
 
 //uint16_t last_state = 0; // stores last state change
 //uint16_t curr_state = 0; // stores current state change
 uint16_t dbnc_state = 0; // stores intermediate state change for debouncing
-uint16_t rpg_tmr = 0;    // timer count for debouncing
+uint16_t vel_tmr = 0;    // timer count for debouncing
+int16_t rot_enc_table[] = {0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0}; // valid movements from state to state
 
-ESOS_USER_TIMER( dbnc_rpg ){               // timer to debounce rpg input
-  if(rpg_tmr == 10){                       // if state hasnt changed for 10 ms
-    _esos_uiF14_setLastRPGCounter(_esos_uiF14_getRPGCounter());               // store old state
-    _esos_uiF14_setRPGCounter(dbnc_state);               // store new state
-    rpg_tmr = 0;                           // reset timer
-  } else if( dbnc_state == RPG_STATE ){    // if state hasn't changed
-    rpg_tmr++;                             // increment timer
-  } else{                                  // if state changed
-    dbnc_state = RPG_STATE;                // set new state and restart timer
-    rpg_tmr = 0;                           // reset timer
-  } 
-}
-
-
-
-uint16_t stateCheck = 0; 
-uint16_t last_stateCheck = 0;
-int16_t dir = 0;
-int16_t last_dir = 0;
-char psz_state[16];
-ESOS_USER_TIMER(debug_rpg){
-  // check states
-  stateCheck = _esos_uiF14_getRPGCounter(); 
-  last_stateCheck = _esos_uiF14_getLastRPGCounter();
-  if(stateCheck != last_stateCheck){
-    sprintf(psz_state, "%d \n", stateCheck); // debug hope it works
-     __esos_unsafe_PutString(psz_state);
-  }
-  if(esos_uiF14_isRpgTurningCW()){
-    LED1 = 1;
-    LED2 = 0;
-  } else if(esos_uiF14_isRpgTurningCCW()){
-    LED1 = 0;
-    LED2 = 1;
+ESOS_USER_TIMER( dbnc_rpg ){ 
+  // look at last state and current state
+  vel_tmr++;
+  dbnc_state = ((_esos_uiF14_getRPGCounter() << 2) | RPG_STATE); // old state, new state in 0000 format
+  if(rot_enc_table[dbnc_state]){
+    // valid state change occured
+    _esos_uiF14_setLastRPGCounter(_esos_uiF14_getRPGCounter());
+    _esos_uiF14_setRPGCounter(RPG_STATE);
+    // calc velocity in clicks per second
+    if(dbnc_state == 13 || dbnc_state == 14){ // transitions from 0 to high 
+      _st_esos_uiF14Data.u16_RPGVelocity = ((uint16_t) 1000/vel_tmr);
+      vel_tmr = 0;
+    }
+  } else if (vel_tmr >= 500){
+    // not moving set velocity to zero
+    _st_esos_uiF14Data.u16_RPGVelocity = 0;
   }
 }
-
-
 
 // UIF14 INITIALIZATION FUNCTION
 void config_esos_uiF14() {
@@ -190,7 +171,7 @@ void config_esos_uiF14() {
 
 
   esos_RegisterTimer(dbnc_rpg, 1);
-  esos_RegisterTimer(debug_rpg, 10);
+
 }
 
 
