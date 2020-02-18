@@ -10,17 +10,20 @@
 #define CONFIG_LED1()     CONFIG_RF4_AS_DIG_OUTPUT()
 #define LED1              (_LATF4)
 #define LED1_ON()         (_LATF4 = 1)
-#define LED1_OFF()          (_LATF4 = 0)
+#define LED1_OFF()        (_LATF4 = 0)
+#define LED1_TOGGLE()     (LED1 = !LED1)
 
 #define CONFIG_LED2()     CONFIG_RB14_AS_DIG_OUTPUT()
 #define LED2              (_LATB14)
 #define LED2_ON()         (_LATB14 = 1) 
 #define LED2_OFF()        (_LATB14 = 0) 
+#define LED2_TOGGLE()     (LED2 = !LED2)
 
 #define CONFIG_LED3()     CONFIG_RB15_AS_DIG_OUTPUT()
 #define LED3              (_LATB15) 
-#define LED3_ON()           (_LATB15 = 0)
-#define LED3_OFF()          (_LATB15 = 1)
+#define LED3_ON()         (_LATB15 = 0)
+#define LED3_OFF()        (_LATB15 = 1)
+#define LED3_TOGGLE()     (LED3 = !LED3)
 
 
 // Switch-related hardware definitions and macros
@@ -58,14 +61,15 @@
 // RPG-related hardware definitions and macros
 #define RPG_A            (_RB8)
 #define RPG_B            (_RB9)
+#define RPG_STATE        (((uint8_t) RPG_A << 1) | RPG_B)
 
-#define RPG_CONFIG()     { \
-                          CONFIG_RB8_AS_DIG_INPUT();\  
-                          CONFIG_RB9_AS_DIG_INPUT();\
-                          ENABLE_RB8_PULLUP();\
-                          ENABLE_RB9_PULLUP();\
-                          DELAY_US(1);\
-}
+#define CONFIG_RPG()     { \
+                          CONFIG_RB8_AS_DIG_INPUT(); \  
+                          CONFIG_RB9_AS_DIG_INPUT(); \
+                          ENABLE_RB8_PULLUP(); \
+                          ENABLE_RB9_PULLUP(); \
+                          DELAY_US(1); \
+                         }
 
 
 #endif	/* REVF14_H */
