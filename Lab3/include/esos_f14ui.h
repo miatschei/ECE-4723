@@ -32,6 +32,7 @@ typedef struct _st_esos_uiF14Data{
     
     uint16_t u16_RPGCounter;
     uint16_t u16_lastRPGCounter;
+    uint16_t u16_RPGVelocity;
 } _st_esos_uiF14Data_t;
 
 // DEFINEs and CONSTANTs
