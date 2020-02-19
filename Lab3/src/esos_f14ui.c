@@ -313,10 +313,8 @@ ESOS_USER_TASK(switch_t1){
       _st_esos_uiF14Data.b_SW1Pressed = true; 
       sw1_led_state = L1_ON; 
       sw1_state = 1; 
-      //__esos_unsafe_PutString("state: 1 \n");
     }
     else if (sw1_state == 1){
-      //__esos_unsafe_PutString("state: 1");
      
       sw1_led_state = L1_ON; //LED1 = 1;
 
@@ -325,20 +323,17 @@ ESOS_USER_TASK(switch_t1){
         _st_esos_uiF14Data.b_SW1Pressed = false; 
         sw1_led_state = L1_OFF; //LED1 = 0;
         sw1_state = 2;
-        //__esos_unsafe_PutString("state: 2 \n");
         sw1_old_time = esos_GetSystemTick();
       }
     }
     else if (sw1_state == 2){
       //wait for second press here
       if ((esos_GetSystemTick() - sw1_old_time) >= 1500){
-        //__esos_unsafe_PutString("timer expired\n");
         sw1_state = 0; //go back to first state
       }
 
       if (((esos_GetSystemTick() - sw1_old_time) <= 1500) && SW1_PRESSED){
         ESOS_TASK_WAIT_TICKS( 25 ); //debounce
-        __esos_unsafe_PutString("sw1 double press\n");
         _st_esos_uiF14Data.b_SW1DoublePressed = true;
         sw1_state = 3;
       }
@@ -347,7 +342,6 @@ ESOS_USER_TASK(switch_t1){
       //blink led
       sw1_led_state = L1_BLINK;
       //should we wait here for blinking to stop? yah probably.
-      //__esos_unsafe_PutString("waiting for blinking to finish \n");
       //return to first state
       sw1_state = 4;
     } 
@@ -356,15 +350,13 @@ ESOS_USER_TASK(switch_t1){
       ESOS_TASK_WAIT_TICKS( 7*_st_esos_uiF14Data.u16_LED1FlashPeriod ); // waits for off -> on -> off -> on-> off -> on -> off before switching flash off
       led1_f = 0;
       sw1_state = 5;
-      //__esos_unsafe_PutString("blinking done \n");
       sw1_led_state = L1_OFF; //turn led off
     } 
     else if (sw1_state == 5){
       if(SW1_PRESSED){
           ESOS_TASK_WAIT_TICKS( 25 ); //debounce
-          //_st_esos_uiF14Data.b_SW2Pressed = true; 
+          _st_esos_uiF14Data.b_SW1Pressed = true; //testing
           _st_esos_uiF14Data.b_SW1DoublePressed = false;
-          //__esos_unsafe_PutString("clearing dp flag\n");
           sw1_state = 6;
           sw1_led_state = L1_ON;
        }
@@ -375,7 +367,6 @@ ESOS_USER_TASK(switch_t1){
         ESOS_TASK_WAIT_TICKS( 25 ); //debounce
         sw1_state = 2;
         sw1_old_time = esos_GetSystemTick();
-        //__esos_unsafe_PutString("cleared.\n");
       }
     }
     ESOS_TASK_YIELD();
@@ -441,7 +432,6 @@ ESOS_USER_TASK(switch_t2){
       _st_esos_uiF14Data.b_SW2Pressed = true; 
       sw2_led_state = L2_ON; 
       sw2_state = 1; 
-      //__esos_unsafe_PutString("state: 1 \n");
     }
     else if (sw2_state == 1){
       sw2_led_state = L2_ON; //LED1 = 1;
@@ -451,21 +441,18 @@ ESOS_USER_TASK(switch_t2){
         _st_esos_uiF14Data.b_SW2Pressed = false;
         sw2_led_state = L2_OFF; //LED1 = 0;
         sw2_state = 2;
-        //__esos_unsafe_PutString("state: 2 \n");
         sw2_old_time = esos_GetSystemTick();
       }
     }
     else if (sw2_state == 2){
       //wait for second press here
       if ((esos_GetSystemTick() - sw2_old_time) >= 1500){
-        //__esos_unsafe_PutString("timer expired\n");
         sw2_state = 0; //go back to first state
       }
 
       if (((esos_GetSystemTick() - sw2_old_time) <= 1500) && SW2_PRESSED){
         _st_esos_uiF14Data.b_SW2Pressed = true;
         ESOS_TASK_WAIT_TICKS( 25 ); //debounce
-        __esos_unsafe_PutString("sw2 double press \n");
         _st_esos_uiF14Data.b_SW2DoublePressed = true;
         sw2_state = 3;
       }
@@ -475,7 +462,6 @@ ESOS_USER_TASK(switch_t2){
       _st_esos_uiF14Data.b_SW2Pressed = false;
       sw2_led_state = L2_BLINK;
       //should we wait here for blinking to stop? yah probably.
-      //__esos_unsafe_PutString("waiting for blinking to finish \n");
       //return to first state
       sw2_state = 4;
     } 
@@ -484,15 +470,13 @@ ESOS_USER_TASK(switch_t2){
       ESOS_TASK_WAIT_TICKS( 7*_st_esos_uiF14Data.u16_LED1FlashPeriod ); //blinking time for timer
       led1_f = 0;
       sw2_state = 5;
-      //__esos_unsafe_PutString("blinking done \n");
       sw2_led_state = L2_OFF; //turn led off
 
     } else if (sw2_state == 5){
       if(SW2_PRESSED){
           ESOS_TASK_WAIT_TICKS( 25 ); //debounce
-          
+          _st_esos_uiF14Data.b_SW2Pressed = true; //testing
           _st_esos_uiF14Data.b_SW2DoublePressed = false;
-          //__esos_unsafe_PutString("clearing dp flag\n");
           sw2_state = 6;
           sw2_led_state = L2_ON;
        }
@@ -504,7 +488,6 @@ ESOS_USER_TASK(switch_t2){
         sw2_state = 2;
         sw2_old_time = esos_GetSystemTick();
         
-        //__esos_unsafe_PutString("cleared.\n");
       }
     }
     ESOS_TASK_YIELD();

@@ -24,19 +24,17 @@ enum MENU_STATE {
     RPG_FAST
 };
 
-static char str_SETTINGS_MENU[] =   "Double Press Settings (1) RPG Settings (2)";
-static char str_SWITCH_MENU[] =     "Double Press for SW1 (1), SW2 (2), SW3 (3)";
-static char str_RPG_MENU[] =        "RPG threshold slow (1), medium (2), fast (3)";
-static char str_BACK[] =            "Back\n";
+static char str_SETTINGS_MENU[] =   "Double Press Settings (1) RPG Settings (2)\n";
+static char str_SWITCH_MENU[] =     "Double Press for SW1 (1), SW2 (2), SW3 (3)\n";
+static char str_RPG_MENU[] =        "RPG threshold slow (1), medium (2), fast (3)\n";
 
-static char str_sw1p_CUR_VALUE[] = "SW1 Double Press Period (+/-): ";
-static char str_sw2p_CUR_VALUE[] = "SW2 Double Press Period (+/-): ";
-static char str_sw3p_CUR_VALUE[] = "SW3 Double Press Period (+/-): ";
+static char str_sw1p_CUR_VALUE[] = "Increase (+) or Decrease (-) SW1 Period: ";
+static char str_sw2p_CUR_VALUE[] = "Increase (+) or Decrease (-) SW2 Period: ";
+static char str_sw3p_CUR_VALUE[] = "Increase (+) or Decrease (-) SW3 Period: ";
 
-// RPG Threshold Settings
-static char str_rpgs_CUR_VALUE[] = "RPG Slow Threshold (+/-): ";
-static char str_rpgm_CUR_VALUE[] = "RPG Medium Threshold (+/-): ";
-static char str_rpgf_CUR_VALUE[] = "RPG Fast Threshold (+/-): ";
+static char str_rpgs_CUR_VALUE[] = "Increase (+) or Decrease (-) RPG Slow Threshold: ";
+static char str_rpgm_CUR_VALUE[] = "Increase (+) or Decrease (-) RPG Medium Threshold: ";
+static char str_rpgf_CUR_VALUE[] = "Increase (+) or Decrease (-) RPG Fast Threshold: ";
 
 ESOS_USER_TASK(menuUI){
     static uint8_t u8_input = 0x00;
@@ -70,7 +68,6 @@ ESOS_USER_TASK(menuUI){
         else if(menu_state == SWITCH_SETTINGS){
             ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
             ESOS_TASK_WAIT_ON_SEND_STRING(str_SWITCH_MENU);
-            ESOS_TASK_WAIT_ON_SEND_STRING(str_BACK);
             ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
             ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
@@ -99,7 +96,6 @@ ESOS_USER_TASK(menuUI){
         else if (menu_state == RPG_SETTINGS){
             ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
             ESOS_TASK_WAIT_ON_SEND_STRING(str_RPG_MENU);
-            ESOS_TASK_WAIT_ON_SEND_STRING(str_BACK);
             ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
             ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
@@ -134,7 +130,6 @@ ESOS_USER_TASK(menuUI){
             ESOS_TASK_WAIT_ON_SEND_STRING(str_sw1p_CUR_VALUE);
             ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING((uint32_t)u16_sw1_period);
             ESOS_TASK_WAIT_ON_SEND_UINT8('\n');
-            ESOS_TASK_WAIT_ON_SEND_STRING(str_BACK);
             ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
             ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
@@ -168,7 +163,6 @@ ESOS_USER_TASK(menuUI){
             ESOS_TASK_WAIT_ON_SEND_STRING(str_sw2p_CUR_VALUE);
             ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING((uint32_t)u16_sw2_period);
             ESOS_TASK_WAIT_ON_SEND_UINT8('\n');
-            ESOS_TASK_WAIT_ON_SEND_STRING(str_BACK);
             ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
             ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
@@ -202,7 +196,6 @@ ESOS_USER_TASK(menuUI){
             ESOS_TASK_WAIT_ON_SEND_STRING(str_sw3p_CUR_VALUE);
             ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING((uint32_t)u16_sw3_period);
             ESOS_TASK_WAIT_ON_SEND_UINT8('\n');
-            ESOS_TASK_WAIT_ON_SEND_STRING(str_BACK);
             ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
             ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
@@ -236,7 +229,6 @@ ESOS_USER_TASK(menuUI){
             ESOS_TASK_WAIT_ON_SEND_STRING(str_rpgs_CUR_VALUE);
             ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING((uint32_t)i16_rpg_slow);
             ESOS_TASK_WAIT_ON_SEND_UINT8('\n');
-            ESOS_TASK_WAIT_ON_SEND_STRING(str_BACK);
             ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
             ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
@@ -270,7 +262,6 @@ ESOS_USER_TASK(menuUI){
             ESOS_TASK_WAIT_ON_SEND_STRING(str_rpgm_CUR_VALUE);
             ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING((uint32_t)i16_rpg_med);
             ESOS_TASK_WAIT_ON_SEND_UINT8('\n');
-            ESOS_TASK_WAIT_ON_SEND_STRING(str_BACK);
             ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
             ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
@@ -304,7 +295,6 @@ ESOS_USER_TASK(menuUI){
             ESOS_TASK_WAIT_ON_SEND_STRING(str_rpgf_CUR_VALUE);
             ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING((uint32_t)i16_rpg_fast);
             ESOS_TASK_WAIT_ON_SEND_UINT8('\n');
-            ESOS_TASK_WAIT_ON_SEND_STRING(str_BACK);
             ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
             ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
@@ -359,14 +349,31 @@ ESOS_USER_TASK(test){
             ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
         }
 
+        static char str_SW1_DOUBLEPRESS[] = "Switch 1 double pressed\n";
+        if (esos_uiF14_isSW1DoublePressed()) {
+            ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+            ESOS_TASK_WAIT_ON_SEND_STRING(str_SW1_DOUBLEPRESS);
+            ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+            _st_esos_uiF14Data.b_SW1DoublePressed = false;
+        }
+
+        static char str_SW2_DOUBLEPRESS[] = "Switch 2 double pressed\n";
+        if (esos_uiF14_isSW2DoublePressed()) {
+            ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
+            ESOS_TASK_WAIT_ON_SEND_STRING(str_SW2_DOUBLEPRESS);
+            ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
+
+            _st_esos_uiF14Data.b_SW2DoublePressed = false;
+        }
+
         static char str_RPG_TURNING_CW[] =      "RPG turning CW ";
         static char str_RPG_TURNING_CCW[] =     "RPG turning CCW ";
         static char str_RPG_TURNING_SLOW[] =    "slow\n";
         static char str_RPG_TURNING_MED[] =     "med\n";
         static char str_RPG_TURNING_FAST[] =    "fast\n";
         static char str_OUTBOUND[32];
-        static char testprint[10];
-        sprintf(testprint, "%d", esos_uiF14_getRpgVelocity_i16());
+
 
         if (esos_uiF14_isRpgTurning()){
             if (esos_uiF14_isRpgTurningCW()){
@@ -406,7 +413,6 @@ ESOS_USER_TASK(test){
     }
     ESOS_TASK_END();
 }
-
 
 
 void user_init(){
