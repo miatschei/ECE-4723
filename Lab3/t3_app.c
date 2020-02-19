@@ -28,13 +28,13 @@ static char str_SETTINGS_MENU[] =   "Double Press Settings (1) RPG Settings (2)\
 static char str_SWITCH_MENU[] =     "Double Press for SW1 (1), SW2 (2), SW3 (3)\n";
 static char str_RPG_MENU[] =        "RPG threshold slow (1), medium (2), fast (3)\n";
 
-static char str_sw1p_CUR_VALUE[] = "Increase (+) or Decrease (-) SW1 Period: ";
-static char str_sw2p_CUR_VALUE[] = "Increase (+) or Decrease (-) SW2 Period: ";
-static char str_sw3p_CUR_VALUE[] = "Increase (+) or Decrease (-) SW3 Period: ";
+static char str_SW1_SET[] =          "Increase (+) or Decrease (-) SW1 Period: ";
+static char str_SW2_SET[] =         "Increase (+) or Decrease (-) SW2 Period: ";
+static char str_SW3_SET[] =         "Increase (+) or Decrease (-) SW3 Period: ";
 
-static char str_rpgs_CUR_VALUE[] = "Increase (+) or Decrease (-) RPG Slow Threshold: ";
-static char str_rpgm_CUR_VALUE[] = "Increase (+) or Decrease (-) RPG Medium Threshold: ";
-static char str_rpgf_CUR_VALUE[] = "Increase (+) or Decrease (-) RPG Fast Threshold: ";
+static char str_RPGSLOW_SET[] =     "Increase (+) or Decrease (-) RPG Slow Threshold: ";
+static char str_RPGMED_SET[] =      "Increase (+) or Decrease (-) RPG Medium Threshold: ";
+static char str_RPGFAST_SET[] =     "Increase (+) or Decrease (-) RPG Fast Threshold: ";
 
 ESOS_USER_TASK(menuUI){
     static uint8_t u8_input = 0x00;
@@ -127,7 +127,7 @@ ESOS_USER_TASK(menuUI){
             u16_sw1_period = esos_uiF14_getSW1Period();
 
             ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-            ESOS_TASK_WAIT_ON_SEND_STRING(str_sw1p_CUR_VALUE);
+            ESOS_TASK_WAIT_ON_SEND_STRING(str_SW1_SET);
             ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING((uint32_t)u16_sw1_period);
             ESOS_TASK_WAIT_ON_SEND_UINT8('\n');
             ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
@@ -160,7 +160,7 @@ ESOS_USER_TASK(menuUI){
             u16_sw2_period = esos_uiF14_getSW2Period();
 
             ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-            ESOS_TASK_WAIT_ON_SEND_STRING(str_sw2p_CUR_VALUE);
+            ESOS_TASK_WAIT_ON_SEND_STRING(str_SW2_SET);
             ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING((uint32_t)u16_sw2_period);
             ESOS_TASK_WAIT_ON_SEND_UINT8('\n');
             ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
@@ -193,7 +193,7 @@ ESOS_USER_TASK(menuUI){
             u16_sw3_period = esos_uiF14_getSW3Period();
 
             ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-            ESOS_TASK_WAIT_ON_SEND_STRING(str_sw3p_CUR_VALUE);
+            ESOS_TASK_WAIT_ON_SEND_STRING(str_SW3_SET);
             ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING((uint32_t)u16_sw3_period);
             ESOS_TASK_WAIT_ON_SEND_UINT8('\n');
             ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
@@ -226,7 +226,7 @@ ESOS_USER_TASK(menuUI){
             i16_rpg_slow = esos_uiF14_getRPGSlow();
 
             ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-            ESOS_TASK_WAIT_ON_SEND_STRING(str_rpgs_CUR_VALUE);
+            ESOS_TASK_WAIT_ON_SEND_STRING(str_RPGSLOW_SET);
             ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING((uint32_t)i16_rpg_slow);
             ESOS_TASK_WAIT_ON_SEND_UINT8('\n');
             ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
@@ -259,7 +259,7 @@ ESOS_USER_TASK(menuUI){
             i16_rpg_med = esos_uiF14_getRPGMedium();
 
             ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-            ESOS_TASK_WAIT_ON_SEND_STRING(str_rpgm_CUR_VALUE);
+            ESOS_TASK_WAIT_ON_SEND_STRING(str_RPGMED_SET);
             ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING((uint32_t)i16_rpg_med);
             ESOS_TASK_WAIT_ON_SEND_UINT8('\n');
             ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
@@ -292,7 +292,7 @@ ESOS_USER_TASK(menuUI){
             i16_rpg_fast = esos_uiF14_getRPGFast();
 
             ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
-            ESOS_TASK_WAIT_ON_SEND_STRING(str_rpgf_CUR_VALUE);
+            ESOS_TASK_WAIT_ON_SEND_STRING(str_RPGFAST_SET);
             ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING((uint32_t)i16_rpg_fast);
             ESOS_TASK_WAIT_ON_SEND_UINT8('\n');
             ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
