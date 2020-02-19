@@ -38,10 +38,15 @@ typedef struct _st_esos_uiF14Data{
      uint16_t u16_SW2Period;
      uint16_t u16_SW3Period;
 
-    uint16_t u16_RPGSlow;
-    uint16_t u16_RPGMedium;
-    uint16_t u16_RPGFast;
+    uint16_t u16_RPGLower;
+    uint16_t u16_RPGUpper;
 
+    uint16_t u16_RPGMediumPeriod;
+    uint16_t u16_RPGFastPeriod;
+
+    uint16_t u16_HBLEDPeriod;
+
+    uint16_t u16_menuState;
 
 } _st_esos_uiF14Data_t;
 
@@ -52,6 +57,8 @@ typedef struct _st_esos_uiF14Data{
 
 // PRIVATE DATA 
 extern volatile _st_esos_uiF14Data_t _st_esos_uiF14Data; // declared volatile since the members of the struct are subject to change
+
+
 
 // PRIVATE FUNCTION PROTOTYPES
 
@@ -99,17 +106,24 @@ inline void esos_uiF14_turnGreenLEDOff (void);
 inline void esos_uiF14_turnYellowLEDOn (void);
 inline void esos_uiF14_turnYellowLEDOff (void);
 
-inline uint16_t esos_uiF14_getRPGValue_u16 (void);
-inline bool esos_uiF14_isRPGTurning (void);
-inline bool esos_uiF14_isRPGTurningSlow (void);
-inline bool esos_uiF14_isRPGTurningMedium (void);
-inline bool esos_uiF14_isRPGTurningFast (void);
-inline bool esos_uiF14_isRPGTurningCW (void);
-inline bool esos_uiF14_isRPGTurningCCW (void);
+inline uint16_t esos_uiF14_getRpgValue_u16 (void);
+inline bool esos_uiF14_isRpgTurning (void);
+inline bool esos_uiF14_isRpgTurningSlow (void);
+inline bool esos_uiF14_isRpgTurningMedium (void);
+inline bool esos_uiF14_isRpgTurningFast (void);
+inline bool esos_uiF14_isRpgTurningCW (void);
+inline bool esos_uiF14_isRpgTurningCCW (void);
+inline uint16_t esos_uiF14_getRPGLower(void);
+inline void esos_uiF14_setRPGLower(uint16_t);
+inline uint16_t esos_uiF14_getRPGUpper(void);
+inline void esos_uiF14_setRPGUpper(uint16_t);
+
+
 
 void config_esos_uiF14();
 int16_t esos_uiF14_getRPGVelocity_i16 (void);
 
+inline int16_t esos_uiF14_getMenuState(void);
 // PUBLIC API ESOS TASK MACROS
 
 #define ESOS_TASK_WAIT_UNTIL_UIF14_SW1_PRESSED()              ESOS_TASK_WAIT_UNTIL( esos_uiF14_isSW1Pressed() )
@@ -148,9 +162,7 @@ int16_t esos_uiF14_getRPGVelocity_i16 (void);
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_FAST()           ESOS_TASK_WAIT_UNTIL(esos_uiF14_isRpgTurningFast())
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_FAST_CW()        ESOS_TASK_WAIT_UNTIL(esos_uiF14_isRpgTurningCW() && esos_uiF14_isRpgTurningFast())
 #define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_TURNS_FAST_CCW()       ESOS_TASK_WAIT_UNTIL(esos_uiF14_isRpgTurningCCW() && esos_uiF14_isRpgTurningFast())
-#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_MAKES_REV(y)           // not yet implemented
-#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_MAKES_CW_REV(y)        // not yet implemented
-#define ESOS_TASK_WAIT_UNTIL_UIF14_RPG_MAKES_CCW_REV(y)       // not yet implemented
+
 
 
 #endif    // ESOS_UIF14_H

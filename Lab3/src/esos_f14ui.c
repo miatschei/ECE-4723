@@ -192,37 +192,31 @@ inline bool esos_uiF14_isRpgTurning ( void ) {
 }
 
 inline bool esos_uiF14_isRpgTurningSlow( void ) {
-  return ((0 < abs(esos_uiF14_getRpgVelocity_i16())) && (abs(esos_uiF14_getRpgVelocity_i16()) <= 15));
+  return ((abs(esos_uiF14_getRpgVelocity_i16())) && (abs(esos_uiF14_getRpgVelocity_i16()) <= _st_esos_uiF14Data.u16_RPGLower));
 }
 
 inline bool esos_uiF14_isRpgTurningMedium( void ) {
-  return ((15 < abs(esos_uiF14_getRpgVelocity_i16())) && (abs(esos_uiF14_getRpgVelocity_i16()) <= 50));
+  return ((_st_esos_uiF14Data.u16_RPGLower < abs(esos_uiF14_getRpgVelocity_i16())) && (abs(esos_uiF14_getRpgVelocity_i16()) <= _st_esos_uiF14Data.u16_RPGUpper));
 }
 
 inline bool esos_uiF14_isRpgTurningFast( void ) {
-  return (50 < abs(esos_uiF14_getRpgVelocity_i16()));
+  return (_st_esos_uiF14Data.u16_RPGUpper < abs(esos_uiF14_getRpgVelocity_i16()));
 }
 
-inline int16_t esos_uiF14_getRPGSlow(void){
-  return _st_esos_uiF14Data.u16_RPGSlow;
+inline uint16_t esos_uiF14_getRPGLower(void){
+  return _st_esos_uiF14Data.u16_RPGLower;
 }
-inline void esos_uiF14_setRPGSlow(int16_t val){
-  _st_esos_uiF14Data.u16_RPGSlow = val;
-}
-
-inline int16_t esos_uiF14_getRPGMedium(void){
-  return _st_esos_uiF14Data.u16_RPGMedium;
-}
-inline void esos_uiF14_setRPGMedium(int16_t val){
-  _st_esos_uiF14Data.u16_RPGMedium = val;
+inline void esos_uiF14_setRPGLower(uint16_t val){
+  _st_esos_uiF14Data.u16_RPGLower = val;
 }
 
-inline int16_t esos_uiF14_getRPGFast(void){
-  return _st_esos_uiF14Data.u16_RPGFast;
+inline uint16_t esos_uiF14_getRPGUpper(void){
+  return _st_esos_uiF14Data.u16_RPGUpper;
 }
-inline void esos_uiF14_setRPGFast(int16_t val){
-  _st_esos_uiF14Data.u16_RPGFast = val;
+inline void esos_uiF14_setRPGUpper(uint16_t val){
+  _st_esos_uiF14Data.u16_RPGUpper = val;
 }
+
 
 inline bool esos_uiF14_isRpgTurningCW( void ) {
   // CW: 3 1 0 2  CCW: 3 2 0 1
@@ -254,6 +248,15 @@ inline int16_t esos_uiF14_getRpgVelocity_i16( void ) {
   } else return 0; // invalid turning
 }
 
+// PUBLIC MENU STATE FUNCTIONs //////////////////////////////
+inline void esos_uiF14_setMenuState(uint16_t next_state) {
+  _st_esos_uiF14Data.u16_menuState = next_state;
+  return;
+}
+
+inline int16_t esos_uiF14_getMenuState(void) {
+  return _st_esos_uiF14Data.u16_menuState;
+}
 
 uint16_t dbnc_state = 0; // stores intermediate state change for debouncing
 uint16_t vel_tmr = 0;    // timer count for debouncing
@@ -328,11 +331,11 @@ ESOS_USER_TASK(switch_t1){
     }
     else if (sw1_state == 2){
       //wait for second press here
-      if ((esos_GetSystemTick() - sw1_old_time) >= 1500){
+      if ((esos_GetSystemTick() - sw1_old_time) >= _st_esos_uiF14Data.u16_SW1Period){
         sw1_state = 0; //go back to first state
       }
 
-      if (((esos_GetSystemTick() - sw1_old_time) <= 1500) && SW1_PRESSED){
+      if (((esos_GetSystemTick() - sw1_old_time) <= _st_esos_uiF14Data.u16_SW1Period) && SW1_PRESSED){
         ESOS_TASK_WAIT_TICKS( 25 ); //debounce
         _st_esos_uiF14Data.b_SW1DoublePressed = true;
         sw1_state = 3;
@@ -446,11 +449,11 @@ ESOS_USER_TASK(switch_t2){
     }
     else if (sw2_state == 2){
       //wait for second press here
-      if ((esos_GetSystemTick() - sw2_old_time) >= 1500){
+      if ((esos_GetSystemTick() - sw2_old_time) >= _st_esos_uiF14Data.u16_SW2Period){
         sw2_state = 0; //go back to first state
       }
 
-      if (((esos_GetSystemTick() - sw2_old_time) <= 1500) && SW2_PRESSED){
+      if (((esos_GetSystemTick() - sw2_old_time) <= _st_esos_uiF14Data.u16_SW2Period) && SW2_PRESSED){
         _st_esos_uiF14Data.b_SW2Pressed = true;
         ESOS_TASK_WAIT_TICKS( 25 ); //debounce
         _st_esos_uiF14Data.b_SW2DoublePressed = true;
@@ -496,22 +499,59 @@ ESOS_USER_TASK(switch_t2){
 }
 
 uint16_t led1_flash_counter = 0;
+uint16_t led2_flash_counter = 0;
+uint16_t led3_flash_counter = 0;
 
 ESOS_USER_TIMER(run_leds){
+  // led 1 flashing
   if(led1_f){// if led flashing
     if(led1_flash_counter < (_st_esos_uiF14Data.u16_LED1FlashPeriod/25)){ // if counter less than period
         led1_flash_counter++; // increment
     } else { // if timer exceeded
         LED1_TOGGLE(); // toggle led
         led1_flash_counter = 0;
-    }}
+    }
+  }
+  // led 2 lights
+  if(esos_uiF14_isRpgTurningMedium()){
+    // if moving medium
+    if(led2_flash_counter < (_st_esos_uiF14Data.u16_RPGMediumPeriod/25)){
+      led2_flash_counter++;
+    } else {
+      LED2_TOGGLE();
+      led2_flash_counter = 0;
+    } 
+  } else if(esos_uiF14_isRpgTurningFast()){
+    // if moving fast
+    if(led2_flash_counter < (_st_esos_uiF14Data.u16_RPGFastPeriod/25)){
+      led2_flash_counter++;
+    } else {
+      LED2_TOGGLE();
+      led2_flash_counter = 0;
+    } 
+  } else if(esos_uiF14_isRpgTurningSlow()){
+    LED2_ON();
+  } else {
+    LED2_OFF();
+  }
+
+  // do HB
+  if(led3_flash_counter < (_st_esos_uiF14Data.u16_HBLEDPeriod/25)){
+    led3_flash_counter++;
+  } else{
+    LED3_TOGGLE();
+    led3_flash_counter = 0;
+  }
+}
+ESOS_USER_TIMER(process_rpg){
+
 }
 
 
 
 // UIF14 INITIALIZATION FUNCTION
 void config_esos_uiF14() {
-  // setup your UI implementation
+  // Hardware Configuration
   CONFIG_RPG();
   CONFIG_LED1();
   CONFIG_LED2();
@@ -520,23 +560,33 @@ void config_esos_uiF14() {
   CONFIG_SW2();
   CONFIG_SW3();
 
+  // Turn all LEDs off
+  LED1_OFF();
+  LED2_OFF();
+  LED3_OFF(); 
 
+  // Default values for struct members
   sw1_state = 0;
   _st_esos_uiF14Data.b_SW1Pressed = false;
 
   sw1_led_state = L1_OFF;
   _st_esos_uiF14Data.u16_LED1FlashPeriod = 125;
-  LED1 = 0;
-  LED2 = 0;
-  LED3 = 0; 
 
+  _st_esos_uiF14Data.u16_RPGLower= 15;
+  _st_esos_uiF14Data.u16_RPGUpper = 50;
+  _st_esos_uiF14Data.u16_RPGMediumPeriod = 250;
+  _st_esos_uiF14Data.u16_RPGFastPeriod = 50;
+  _st_esos_uiF14Data.u16_SW1Period = 1000;
+  _st_esos_uiF14Data.u16_SW2Period = 1000;
+  _st_esos_uiF14Data.u16_HBLEDPeriod = 250;
 
+  // Register local tasks and timers
   esos_RegisterTimer(dbnc_rpg, 1);
+  esos_RegisterTimer(process_rpg, 25);
   esos_RegisterTask(switch_t1);
   esos_RegisterTask(switch_t2);
   esos_RegisterTask(led_t1);
   esos_RegisterTask(sw3_handler);
-  //esos_RegisterTimer(blink_l1, _st_esos_uiF14Data.u16_LED1FlashPeriod);
   esos_RegisterTimer(run_leds, 25);
 
 }
