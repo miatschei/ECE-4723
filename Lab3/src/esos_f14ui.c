@@ -35,53 +35,53 @@ inline uint16_t _esos_uiF14_getLastRPGCounter (void) {
 // PUBLIC SWITCH FUNCTIONS
 
 //SW1 ---------------------
-inline bool esos_uiF14_getSW1Pressed (void) {         // should be "isSW1", check all functions. Should not return a true, just the struct properties
-    return (_st_esos_uiF14Data.b_SW1Pressed==true);
+inline bool esos_uiF14_isSW1Pressed (void) {         // should be "isSW1", check all functions. Should not return a true, just the struct properties
+    return (_st_esos_uiF14Data.b_SW1Pressed);
 }
 
-inline bool esos_uiF14_getSW1Released (void) {
-    return (_st_esos_uiF14Data.b_SW1Pressed==false);
+inline bool esos_uiF14_isSW1Released (void) {
+    return (!_st_esos_uiF14Data.b_SW1Pressed);
 }
 
-inline bool esos_uiF14_getSW1DoublePressed (void) {
-    return (_st_esos_uiF14Data.b_SW1DoublePressed==true);
+inline bool esos_uiF14_isSW1DoublePressed (void) {
+    return (_st_esos_uiF14Data.b_SW1DoublePressed);
 }
 
 //SW2 ---------------------
-inline bool esos_uiF14_getSW2Pressed (void) {
-    return (_st_esos_uiF14Data.b_SW2Pressed==true);
+inline bool esos_uiF14_isSW2Pressed (void) {
+    return (_st_esos_uiF14Data.b_SW2Pressed);
 }
 
-inline bool esos_uiF14_getSW2Released (void) {
-    return (_st_esos_uiF14Data.b_SW2Pressed==false);
+inline bool esos_uiF14_isSW2Released (void) {
+    return (!_st_esos_uiF14Data.b_SW2Pressed);
 }
 
-inline bool esos_uiF14_getSW2DoublePressed (void) {
-    return (_st_esos_uiF14Data.b_SW2DoublePressed==true);
+inline bool esos_uiF14_isSW2DoublePressed (void) {
+    return (_st_esos_uiF14Data.b_SW2DoublePressed);
 }
 
 //SW3 ---------------------
-inline bool esos_uiF14_getSW3Pressed (void) {
-    return (_st_esos_uiF14Data.b_SW3Pressed==true);
+inline bool esos_uiF14_isSW3Pressed (void) {
+    return (_st_esos_uiF14Data.b_SW3Pressed);
 }
 
-inline bool esos_uiF14_getSW3Released (void) {
-    return (_st_esos_uiF14Data.b_SW3Pressed==false);
+inline bool esos_uiF14_isSW3Released (void) {
+    return (!_st_esos_uiF14Data.b_SW3Pressed);
 }
 
-inline bool esos_uiF14_getSW3DoublePressed (void) {
-    return (_st_esos_uiF14Data.b_SW3DoublePressed==true);
+inline bool esos_uiF14_isSW3DoublePressed (void) {
+    return (_st_esos_uiF14Data.b_SW3DoublePressed);
 }
 
 
 // PUBLIC LED FUNCTIONS
 
 inline bool esos_uiF14_isLED1On (void) {
-    return (_st_esos_uiF14Data.b_LED1On==true);
+    return (_st_esos_uiF14Data.b_LED1On);
 }
 
 inline bool esos_uiF14_isLED1Off (void) {
-    return (_st_esos_uiF14Data.b_LED1On==false);
+    return (!_st_esos_uiF14Data.b_LED1On);
 }
 
 inline void esos_uiF14_turnLED1On (void) {
@@ -104,6 +104,61 @@ inline void esos_uiF14_flashLED1( uint16_t u16_period) {
     return;
 }
 
+inline bool esos_uiF14_isLED2On (void) {
+    return (_st_esos_uiF14Data.b_LED2On);
+}
+
+inline bool esos_uiF14_isLED2Off (void) {
+    return (!_st_esos_uiF14Data.b_LED2On);
+}
+
+inline void esos_uiF14_turnLED2On (void) {
+    _st_esos_uiF14Data.b_LED2On = true;
+    return;
+}
+
+inline void esos_uiF14_turnLED2Off (void) {
+    _st_esos_uiF14Data.b_LED2On = false;
+    return;
+}
+
+inline void esos_uiF14_toggleLED2 (void) {
+    _st_esos_uiF14Data.b_LED2On ^= 1;
+    return;
+}
+
+inline void esos_uiF14_flashLED2( uint16_t u16_period) {
+    _st_esos_uiF14Data.u16_LED2FlashPeriod = u16_period;
+    return;
+}
+
+inline bool esos_uiF14_isLED3On (void) {
+    return (_st_esos_uiF14Data.b_LED3On);
+}
+
+inline bool esos_uiF14_isLED3Off (void) {
+    return (!_st_esos_uiF14Data.b_LED3On);
+}
+
+inline void esos_uiF14_turnLED3On (void) {
+    _st_esos_uiF14Data.b_LED3On = true;
+    return;
+}
+
+inline void esos_uiF14_turnLED3Off (void) {
+    _st_esos_uiF14Data.b_LED3On = false;
+    return;
+}
+
+inline void esos_uiF14_toggleLED3 (void) {
+    _st_esos_uiF14Data.b_LED3On ^= 1;
+    return;
+}
+
+inline void esos_uiF14_flashLED3( uint16_t u16_period) {
+    _st_esos_uiF14Data.u16_LED3FlashPeriod = u16_period;
+    return;
+}
 /****** LED2 and LED3 will need similar.  ********/
 /****** RED, GREEN, and YELLOW functions need to be created *******/
 
@@ -130,7 +185,7 @@ inline bool esos_uiF14_isRpgTurningFast( void ) {
   return (50 < abs(esos_uiF14_getRpgVelocity_i16()));
 }
 
-inline bool esos_uiF14_isRpgTurningCW( ) {
+inline bool esos_uiF14_isRpgTurningCW( void ) {
   // CW: 3 1 0 2  CCW: 3 2 0 1
   uint16_t state = _esos_uiF14_getRPGCounter(); 
   uint16_t last_state = _esos_uiF14_getLastRPGCounter();
