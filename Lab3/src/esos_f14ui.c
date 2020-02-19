@@ -215,8 +215,7 @@ inline int16_t esos_uiF14_getRpgVelocity_i16( void ) {
   } else return 0; // invalid turning
 }
 
-//uint16_t last_state = 0; // stores last state change
-//uint16_t curr_state = 0; // stores current state change
+
 uint16_t dbnc_state = 0; // stores intermediate state change for debouncing
 uint16_t vel_tmr = 0;    // timer count for debouncing
 int16_t rot_enc_table[] = {0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0}; // valid movements from state to state
@@ -241,10 +240,11 @@ ESOS_USER_TIMER( dbnc_rpg ){
 }
 
 
+
 uint32_t sw1_old_time = 0; 
 uint16_t sw1_state = 0;
-uint16_t sw1_flash_counter = 0;
-uint8_t  sw1_f = 0;
+
+uint8_t  led1_f = 0;
 //     SW1_IDLE 0
 //     SW1_SINGLE_HIGH  1
 //     SW1_SINGLE_LOW 2
@@ -255,22 +255,23 @@ uint8_t  sw1_f = 0;
 #define SW2_SHOW 1
 uint8_t led_display;
 enum sw1_led_states {
-  L1_ON, 
   L1_OFF, 
+  L1_ON, 
   L1_BLINK,
 } sw1_led_state;
 
 enum sw2_led_states {
-  L2_ON, 
   L2_OFF, 
+  L2_ON, 
   L2_BLINK,
 } sw2_led_state;
+
+
 
 ESOS_USER_TASK(switch_t1){
   ESOS_TASK_BEGIN();
   while(true){
     if(SW1_PRESSED && sw1_state == 0){
-      _st_esos_uiF14Data.b_SW2Pressed = true; 
       ESOS_TASK_WAIT_TICKS( 25 ); //debounce
       _st_esos_uiF14Data.b_SW1Pressed = true; 
       sw1_led_state = L1_ON; 
@@ -315,8 +316,8 @@ ESOS_USER_TASK(switch_t1){
     } 
     else if (sw1_state == 4){
       sw1_led_state = L1_BLINK;
-      ESOS_TASK_WAIT_TICKS( 1000 ); //blinking time for timer
-      sw1_f = 0;
+      ESOS_TASK_WAIT_TICKS( 7*_st_esos_uiF14Data.u16_LED1FlashPeriod ); // waits for off -> on -> off -> on-> off -> on -> off before switching flash off
+      led1_f = 0;
       sw1_state = 5;
       //__esos_unsafe_PutString("blinking done \n");
       sw1_led_state = L1_OFF; //turn led off
@@ -324,7 +325,7 @@ ESOS_USER_TASK(switch_t1){
     else if (sw1_state == 5){
       if(SW1_PRESSED){
           ESOS_TASK_WAIT_TICKS( 25 ); //debounce
-          _st_esos_uiF14Data.b_SW2Pressed = true; 
+          //_st_esos_uiF14Data.b_SW2Pressed = true; 
           _st_esos_uiF14Data.b_SW1DoublePressed = false;
           //__esos_unsafe_PutString("clearing dp flag\n");
           sw1_state = 6;
@@ -332,7 +333,7 @@ ESOS_USER_TASK(switch_t1){
        }
     } else if(sw1_state == 6){
       if(SW1_RELEASED){
-        _st_esos_uiF14Data.b_SW2Pressed = false; 
+        _st_esos_uiF14Data.b_SW1Pressed = false; 
         sw1_led_state = L1_OFF;
         ESOS_TASK_WAIT_TICKS( 25 ); //debounce
         sw1_state = 2;
@@ -345,22 +346,23 @@ ESOS_USER_TASK(switch_t1){
   ESOS_TASK_END();
 }
 
+char buff[50];
 
 ESOS_USER_TASK(led_t1){
   ESOS_TASK_BEGIN();
   while(true){
       if (((sw1_led_state == L1_ON) && (led_display == SW1_SHOW)) || ((sw2_led_state == L2_ON) && (led_display == SW2_SHOW))){
         LED1 = 1;
-        _st_esos_uiF14Data.b_LED1On = true;
+        _st_esos_uiF14Data.b_LED1On = TRUE;
       } else if(((sw1_led_state == L1_OFF) && (led_display == SW1_SHOW)) || ((sw2_led_state == L2_OFF) && (led_display == SW2_SHOW))){
         LED1 = 0;
-        _st_esos_uiF14Data.b_LED1On = false;
+        _st_esos_uiF14Data.b_LED1On = FALSE;
       } else if(((sw1_led_state == L1_BLINK) && (led_display == SW1_SHOW)) || ((sw2_led_state == L2_BLINK) && (led_display == SW2_SHOW))){
-        sw1_f = 1;
+        led1_f = 1;
       } else if ((sw1_led_state == L1_BLINK) && (led_display != SW1_SHOW)){
-        sw1_f = 0;
+        led1_f = 0;
         LED1 = 0;
-        _st_esos_uiF14Data.b_LED1On = false;
+        _st_esos_uiF14Data.b_LED1On = FALSE;
       }
       ESOS_TASK_YIELD();
     }
@@ -382,7 +384,7 @@ ESOS_USER_TASK(sw3_handler){
   }
   
 ESOS_USER_TIMER(blink_l1){
-      if(sw1_f){
+      if(led1_f){
         LED1_TOGGLE();
       }
 }
@@ -400,7 +402,7 @@ ESOS_USER_TASK(switch_t2){
     if(SW2_PRESSED && sw2_state == 0){
       ESOS_TASK_WAIT_TICKS( 25 ); //debounce
       _st_esos_uiF14Data.b_SW2Pressed = true; 
-      sw2_led_state = L1_ON; 
+      sw2_led_state = L2_ON; 
       sw2_state = 1; 
       //__esos_unsafe_PutString("state: 1 \n");
     }
@@ -442,8 +444,8 @@ ESOS_USER_TASK(switch_t2){
     } 
     else if (sw2_state == 4){
       sw2_led_state = L2_BLINK;
-      ESOS_TASK_WAIT_TICKS( 1000 ); //blinking time for timer
-      sw1_f = 0;
+      ESOS_TASK_WAIT_TICKS( 7*_st_esos_uiF14Data.u16_LED1FlashPeriod ); //blinking time for timer
+      led1_f = 0;
       sw2_state = 5;
       //__esos_unsafe_PutString("blinking done \n");
       sw2_led_state = L2_OFF; //turn led off
@@ -451,23 +453,38 @@ ESOS_USER_TASK(switch_t2){
     } else if (sw2_state == 5){
       if(SW2_PRESSED){
           ESOS_TASK_WAIT_TICKS( 25 ); //debounce
-          sw2_led_state = L2_ON;
+          
           _st_esos_uiF14Data.b_SW2DoublePressed = false;
           //__esos_unsafe_PutString("clearing dp flag\n");
           sw2_state = 6;
+          sw2_led_state = L2_ON;
        }
     } else if(sw2_state == 6){
       if(SW2_RELEASED){
-        ESOS_TASK_WAIT_TICKS( 25 ); //debounce
+        _st_esos_uiF14Data.b_SW2Pressed = false; 
         sw2_led_state = L2_OFF;
-        sw2_old_time = esos_GetSystemTick();
+        ESOS_TASK_WAIT_TICKS( 25 ); //debounce
         sw2_state = 2;
+        sw2_old_time = esos_GetSystemTick();
+        
         //__esos_unsafe_PutString("cleared.\n");
       }
     }
     ESOS_TASK_YIELD();
   }
   ESOS_TASK_END();
+}
+
+uint16_t led1_flash_counter = 0;
+
+ESOS_USER_TIMER(run_leds){
+  if(led1_f){// if led flashing
+    if(led1_flash_counter < (_st_esos_uiF14Data.u16_LED1FlashPeriod/25)){ // if counter less than period
+        led1_flash_counter++; // increment
+    } else { // if timer exceeded
+        LED1_TOGGLE(); // toggle led
+        led1_flash_counter = 0;
+    }}
 }
 
 
@@ -499,7 +516,8 @@ void config_esos_uiF14() {
   esos_RegisterTask(switch_t2);
   esos_RegisterTask(led_t1);
   esos_RegisterTask(sw3_handler);
-  esos_RegisterTimer(blink_l1, _st_esos_uiF14Data.u16_LED1FlashPeriod);
+  //esos_RegisterTimer(blink_l1, _st_esos_uiF14Data.u16_LED1FlashPeriod);
+  esos_RegisterTimer(run_leds, 25);
 
 }
 
