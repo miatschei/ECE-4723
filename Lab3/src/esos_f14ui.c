@@ -12,7 +12,7 @@
 
 volatile _st_esos_uiF14Data_t _st_esos_uiF14Data;
 
-// PRIVATE FUNCTIONS
+// PRIVATE FUNCTIONS ///////////////////////////////////////////////////////////
 inline void _esos_uiF14_setRPGCounter (uint16_t newValue) {
     _st_esos_uiF14Data.u16_RPGCounter = newValue;
     return;
@@ -32,9 +32,9 @@ inline uint16_t _esos_uiF14_getLastRPGCounter (void) {
 }
 
 
-// PUBLIC SWITCH FUNCTIONS
+// PUBLIC SWITCH FUNCTIONS ///////////////////////////////////////////////////////////
 
-//SW1 ---------------------
+//SW1 ----------------------------------------------------
 inline bool esos_uiF14_isSW1Pressed (void) {         // should be "isSW1", check all functions. Should not return a true, just the struct properties
     return (_st_esos_uiF14Data.b_SW1Pressed);
 }
@@ -47,7 +47,14 @@ inline bool esos_uiF14_isSW1DoublePressed (void) {
     return (_st_esos_uiF14Data.b_SW1DoublePressed);
 }
 
-//SW2 ---------------------
+inline uint16_t esos_uiF14_getSW1Period(void){
+  return _st_esos_uiF14Data.u16_SW1Period;
+}
+inline uint16_t esos_uiF14_setSW1Period(uint16_t period){
+  _st_esos_uiF14Data.u16_SW1Period = period;
+}
+
+//SW2 -----------------------------------------------------
 inline bool esos_uiF14_isSW2Pressed (void) {
     return (_st_esos_uiF14Data.b_SW2Pressed);
 }
@@ -60,7 +67,14 @@ inline bool esos_uiF14_isSW2DoublePressed (void) {
     return (_st_esos_uiF14Data.b_SW2DoublePressed);
 }
 
-//SW3 ---------------------
+inline uint16_t esos_uiF14_getSW2Period(void){
+  return _st_esos_uiF14Data.u16_SW2Period;
+}
+inline uint16_t esos_uiF14_setSW2Period(uint16_t period){
+  _st_esos_uiF14Data.u16_SW2Period = period;
+}
+
+//SW3 --------------------------------------------------------
 inline bool esos_uiF14_isSW3Pressed (void) {
     return (_st_esos_uiF14Data.b_SW3Pressed);
 }
@@ -73,8 +87,15 @@ inline bool esos_uiF14_isSW3DoublePressed (void) {
     return (_st_esos_uiF14Data.b_SW3DoublePressed);
 }
 
+inline uint16_t esos_uiF14_getSW3Period(void){
+  return _st_esos_uiF14Data.u16_SW3Period;
+}
+inline uint16_t esos_uiF14_setSW3Period(uint16_t period){
+  _st_esos_uiF14Data.u16_SW3Period = period;
+}
 
-// PUBLIC LED FUNCTIONS
+
+// PUBLIC LED FUNCTIONS ///////////////////////////////////////////////////
 
 inline bool esos_uiF14_isLED1On (void) {
     return (_st_esos_uiF14Data.b_LED1On);
@@ -159,15 +180,12 @@ inline void esos_uiF14_flashLED3( uint16_t u16_period) {
     _st_esos_uiF14Data.u16_LED3FlashPeriod = u16_period;
     return;
 }
-/****** LED2 and LED3 will need similar.  ********/
-/****** RED, GREEN, and YELLOW functions need to be created *******/
 
-// PUBLIC RPG FUNCTIONS
+// PUBLIC RPG FUNCTIONS //////////////////////////////////////////////////////////
 
 inline uint16_t esos_uiF14_getRpgValue_u16 ( void ) {
     return _st_esos_uiF14Data.u16_RPGCounter;
 }
-
 
 inline bool esos_uiF14_isRpgTurning ( void ) {
     return (esos_uiF14_getRpgVelocity_i16() != 0);
@@ -183,6 +201,27 @@ inline bool esos_uiF14_isRpgTurningMedium( void ) {
 
 inline bool esos_uiF14_isRpgTurningFast( void ) {
   return (50 < abs(esos_uiF14_getRpgVelocity_i16()));
+}
+
+inline int16_t esos_uiF14_getRPGSlow(void){
+  return _st_esos_uiF14Data.u16_RPGSlow;
+}
+inline void esos_uiF14_setRPGSlow(int16_t val){
+  _st_esos_uiF14Data.u16_RPGSlow = val;
+}
+
+inline int16_t esos_uiF14_getRPGMedium(void){
+  return _st_esos_uiF14Data.u16_RPGMedium;
+}
+inline void esos_uiF14_setRPGMedium(int16_t val){
+  _st_esos_uiF14Data.u16_RPGMedium = val;
+}
+
+inline int16_t esos_uiF14_getRPGFast(void){
+  return _st_esos_uiF14Data.u16_RPGFast;
+}
+inline void esos_uiF14_setRPGFast(int16_t val){
+  _st_esos_uiF14Data.u16_RPGFast = val;
 }
 
 inline bool esos_uiF14_isRpgTurningCW( void ) {
@@ -240,7 +279,6 @@ ESOS_USER_TIMER( dbnc_rpg ){
 }
 
 
-
 uint32_t sw1_old_time = 0; 
 uint16_t sw1_state = 0;
 
@@ -265,7 +303,6 @@ enum sw2_led_states {
   L2_ON, 
   L2_BLINK,
 } sw2_led_state;
-
 
 
 ESOS_USER_TASK(switch_t1){
@@ -520,5 +557,3 @@ void config_esos_uiF14() {
   esos_RegisterTimer(run_leds, 25);
 
 }
-
-
