@@ -29,7 +29,8 @@
 
 #include "esos_sensor.h"
 #include "esos_pic24_sensor.h"
-#include <esos.h>
+#include "esos.h"
+#include "esos_pic24.h"
 #include <stdlib.h>
 
 /**

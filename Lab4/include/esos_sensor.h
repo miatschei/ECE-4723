@@ -42,8 +42,8 @@
 #define ESOS_SENSOR_H
 
 /* I N C L U D E S **********************************************************/
-#include <esos.h>
-#include "esos_pic24_sensor.h"
+#include "esos.h"
+// #include "esos_pic24_sensor.h"
 
 /* E N U M S ****************************************************************/
 

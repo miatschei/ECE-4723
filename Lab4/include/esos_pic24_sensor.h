@@ -41,7 +41,7 @@
  */
 
 /* I N C L U D E S **********************************************************/
-#include <esos_sensor.h>
+#include "esos_sensor.h"
 #include "esos_pic24_sensor.h"
 #include "pic24_adc.h"
 #include "revF14.h"
@@ -59,6 +59,6 @@ void esos_sensor_initiate_hw (void);
 uint16_t esos_sensor_getvalue_u16_hw (void);
 void esos_sensor_release_hw (void);
 BOOL esos_sensor_is_converting_hw (void);
-int convert_uint32_t_to_str(unit32_t u32_val, char *str, uint32_t len, int base);
+//int convert_uint32_t_to_str(unit32_t u32_val, char *str, uint32_t len, int base);
 
 #endif
