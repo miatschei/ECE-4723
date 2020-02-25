@@ -76,7 +76,7 @@
                         AD1CON1bits.ASAM = 0;\
                         AD1CON1bits.SAMP = 0;\
                         AD1CON1bits.DONE = 0;\
-                        AD1CON2bits.VCFG = 0b001;\
+                        AD1CON2bits.VCFG = 0b000;\
                         AD1CON2bits.CSCNA = 0;\
                         AD1CON2bits.CHPS = 0b00;\
                         AD1CON2bits.SMPI = 0b00000;\
