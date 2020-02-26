@@ -405,8 +405,14 @@ ESOS_USER_TASK(sw3_handler){
   while(true){
       if (SW3_PRESSED){
         ESOS_TASK_WAIT_TICKS( 25 ); //debounce
+        
+        _st_esos_uiF14Data.b_SW3Pressed = true;
+        //debug statement
+        //if (_st_esos_uiF14Data.b_SW3Pressed){__esos_unsafe_PutString("sw3 is pressed \n ");}
+        
         led_display = SW2_SHOW;
       } else {
+        _st_esos_uiF14Data.b_SW3Pressed = false;
         led_display = SW1_SHOW;
       }
       ESOS_TASK_YIELD();
