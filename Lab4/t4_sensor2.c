@@ -117,29 +117,33 @@ ESOS_USER_TASK(state_change){
                 ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
                 ESOS_TASK_WAIT_ON_SEND_STRING(str_process_menu_title);
                 ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-
+                ESOS_TASK_WAIT_TICKS( 10 );
                 // wait for user input
                 ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
                 ESOS_TASK_WAIT_ON_GET_UINT8(u8_process);
                 ESOS_TASK_SIGNAL_AVAILABLE_IN_COMM();
+                ESOS_TASK_WAIT_TICKS( 10 );
                 
                 if (u8_process == '1'){
                     //one shot process mode, only need one sample and do not need to select the sample size
                     u8_read_type = ESOS_SENSOR_ONE_SHOT;
-                } else{
+                    my_state = 0;
+                } 
+                else{
                     // print process menu
                     ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
                     ESOS_TASK_WAIT_ON_SEND_STRING(str_sample_menu_title);
                     ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
-
+                    ESOS_TASK_WAIT_TICKS( 10 );
                     // wait for use input
                     ESOS_TASK_WAIT_ON_AVAILABLE_IN_COMM();
                     ESOS_TASK_WAIT_ON_GET_UINT8(u8_sample);
                     ESOS_TASK_SIGNAL_AVAILABLE_IN_COMM();
-
+                    ESOS_TASK_WAIT_TICKS( 10 );
                     my_state = 6; 
                 }
-            } else if (my_state == 6){
+            } 
+            else if (my_state == 6){
                 
                 if(u8_process == '2' && u8_sample=='1'){
                     u8_read_type = ESOS_SENSOR_AVG2;
