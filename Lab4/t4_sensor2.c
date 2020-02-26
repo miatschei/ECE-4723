@@ -126,11 +126,11 @@ ESOS_USER_TASK(state_change){
 
                 my_state = 5;
                 
-                // if (u8_process == '1'){
-                //     //one shot process mode, only need one sample and do not need to select the sample size
-                //     u8_read_type = ESOS_SENSOR_ONE_SHOT;
-                //     my_state = 0;
-                // } 
+                 if (u8_process == '1'){
+                     //one shot process mode, only need one sample and do not need to select the sample size
+                     u8_read_type = ESOS_SENSOR_ONE_SHOT;
+                     my_state = 0;
+                 } 
              
                 if (u8_process != '1' && my_state == 5){
                         // print process menu
