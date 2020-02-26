@@ -24,7 +24,7 @@ static char str_two[] = "1. two\n";
 static char str_four[] = "2. four\n";
 static char str_eight[] = "3. eight\n";
 static char str_sixteen[] = "4. sixteen\n";
-static char str_thiry_two[] = "5. thirty-two\n";
+static char str_thirty_two[] = "5. thirty-two\n";
 static char str_sixty_four[] = "6. sixty-four\n";
 
 static uint16_t u16_adcval;
@@ -36,7 +36,7 @@ static uint8_t my_state; //state variable holder
 //user input variables 
 static uint8_t u8_process; //user set process variable - ex: 1 for one_shot, 2 for average, etc... 
 static uint8_t u8_sample; 
-static uint8_t u8_read_type; //store the e_senProcess here 
+static uint8_t u8_read_type = ESOS_SENSOR_ONE_SHOT; //store the e_senProcess here 
 
 
 ESOS_USER_TASK(read_pot){
@@ -46,7 +46,8 @@ ESOS_USER_TASK(read_pot){
         if (en_print == 1){
             ESOS_ALLOCATE_CHILD_TASK(get_adc);
             ESOS_TASK_SPAWN_AND_WAIT(get_adc, _WAIT_ON_AVAILABLE_SENSOR, potCH, ESOS_SENSOR_VREF_3V0);
-            ESOS_TASK_SPAWN_AND_WAIT(get_adc,_WAIT_SENSOR_QUICK_READ, &u16_adcval);
+            // ESOS_TASK_SPAWN_AND_WAIT(get_adc,_WAIT_SENSOR_QUICK_READ, &u16_adcval);
+            ESOS_TASK_SPAWN_AND_WAIT(get_adc, _WAIT_SENSOR_READ, &u16_adcval, u8_read_type, ESOS_SENSOR_FORMAT_BITS);
             ESOS_SENSOR_CLOSE();
             ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
             ESOS_TASK_WAIT_ON_SEND_UINT32_AS_HEX_STRING(u16_adcval);
@@ -140,11 +141,12 @@ ESOS_USER_TASK(state_change){
                     // print process menu
                     ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
                     ESOS_TASK_WAIT_ON_SEND_STRING(str_sample_menu_title);
-                    ESOS_TASK_WAIT_ON_SEND_STRING(str_one_shot);
-                    ESOS_TASK_WAIT_ON_SEND_STRING(str_average);
-                    ESOS_TASK_WAIT_ON_SEND_STRING(str_minimum);
-                    ESOS_TASK_WAIT_ON_SEND_STRING(str_maximum);
-                    ESOS_TASK_WAIT_ON_SEND_STRING(str_median);
+                    ESOS_TASK_WAIT_ON_SEND_STRING(str_two);
+                    ESOS_TASK_WAIT_ON_SEND_STRING(str_four);
+                    ESOS_TASK_WAIT_ON_SEND_STRING(str_eight);
+                    ESOS_TASK_WAIT_ON_SEND_STRING(str_sixteen);
+                    ESOS_TASK_WAIT_ON_SEND_STRING(str_thirty_two);
+                    ESOS_TASK_WAIT_ON_SEND_STRING(str_sixty_four);
                     ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
                     // wait for use input
