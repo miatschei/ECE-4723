@@ -11,21 +11,10 @@ static char str_SW1[] = "\n";
 static char str_SW2[] = "SWITCH PRESSED\n";
 
 //process strings 
-static char str_process_menu_title[] = "Processing Modes\n";
-static char str_one_shot[] = "1. One Shot\n";
-static char str_average[] = "2. Average\n";
-static char str_minimum[] = "3. Minimum\n";
-static char str_maximum[] = "4. Maximum\n";
-static char str_median[] = "5. Median\n";
+static char str_process_menu_title[] = "Processing Modes\n1. One Shot\n2. Average\n3. Minimum\n4. Maximum\n5. Median\n";
 
 //sample number strings
-static char str_sample_menu_title[] = "Number of Samples\n";
-static char str_two[] = "1. two\n";
-static char str_four[] = "2. four\n";
-static char str_eight[] = "3. eight\n";
-static char str_sixteen[] = "4. sixteen\n";
-static char str_thirty_two[] = "5. thirty-two\n";
-static char str_sixty_four[] = "6. sixty-four\n";
+static char str_sample_menu_title[] = "Number of Samples\n1. two\n2. four\n3. eight\n4. sixteen\n5. thirty-two\n6. sixty-four\n";
 
 static uint16_t u16_adcval;
 static uint16_t u16_state;
@@ -73,12 +62,12 @@ ESOS_USER_TASK(state_change){
             if (my_state == 0){
                 en_print = 0;
                 continuous = 0;
-                if(esos_uiF14_isSW1Pressed()){
+                if(SW1_PRESSED){
                     ESOS_TASK_WAIT_TICKS( 25 ); //debounce
                     my_state = 1;
                     en_print = 1;
                 }
-                if(esos_uiF14_isSW2Pressed()){
+                if(SW2_PRESSED){
                     ESOS_TASK_WAIT_TICKS( 25 ); //debounce
                     my_state = 2;
                     en_print = 1;
@@ -86,35 +75,40 @@ ESOS_USER_TASK(state_change){
                 }
 
                 // **sw3 not currently working**
-                if(esos_uiF14_isSW3Pressed()){
+                if(SW3_PRESSED){
                     ESOS_TASK_WAIT_TICKS( 25 ); //debounce
-                    my_state = 5;
+                    my_state = 4;
                     en_print = 0;
                     continuous = 0;
                 } 
 
             } else if(my_state == 1) {
-                if(esos_uiF14_isSW1Released()){
+                if(SW1_RELEASED){
                     ESOS_TASK_WAIT_TICKS( 25 ); //debounce
                     my_state = 0;
                 }
                 en_print = 0;
             } else if (my_state == 2){
-                if (esos_uiF14_isSW2Released() || esos_uiF14_isSW1Released()){
+                if (SW2_RELEASED || SW1_RELEASED){
                     ESOS_TASK_WAIT_TICKS( 25 ); //debounce
                     my_state = 3; //go back to first state and wait for a single SW2 press
-                } else if (esos_uiF14_isSW1Pressed()){
+                } else if (SW1_PRESSED){
                     ESOS_TASK_WAIT_TICKS( 25 ); //debounce
                     my_state = 0;
                 }
             } else if (my_state == 3){
-                if ((esos_uiF14_isSW2Pressed()) || (esos_uiF14_isSW1Pressed())){
-                    ESOS_TASK_WAIT_TICKS( 25 ); //debounce
+                if ((SW2_PRESSED) || (SW1_PRESSED)){
+                    ESOS_TASK_WAIT_TICKS( 10 ); //debounce
                     my_state = 0;
                     en_print = 0;
+                    continuous = 0;
+                } else if(SW3_PRESSED){
+                    my_state = 4;
+                    en_print = 0;
+                    continuous = 0;
                 }
             } else if (my_state == 4){
-                if (esos_uiF14_isSW3Released()){
+                if (SW3_RELEASED){
                     //print out processing modes here
                     my_state = 5;
                 }
@@ -122,11 +116,6 @@ ESOS_USER_TASK(state_change){
                 // print process menu
                 ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
                 ESOS_TASK_WAIT_ON_SEND_STRING(str_process_menu_title);
-                ESOS_TASK_WAIT_ON_SEND_STRING(str_one_shot);
-                ESOS_TASK_WAIT_ON_SEND_STRING(str_average);
-                ESOS_TASK_WAIT_ON_SEND_STRING(str_minimum);
-                ESOS_TASK_WAIT_ON_SEND_STRING(str_maximum);
-                ESOS_TASK_WAIT_ON_SEND_STRING(str_median);
                 ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
                 // wait for user input
@@ -141,12 +130,6 @@ ESOS_USER_TASK(state_change){
                     // print process menu
                     ESOS_TASK_WAIT_ON_AVAILABLE_OUT_COMM();
                     ESOS_TASK_WAIT_ON_SEND_STRING(str_sample_menu_title);
-                    ESOS_TASK_WAIT_ON_SEND_STRING(str_two);
-                    ESOS_TASK_WAIT_ON_SEND_STRING(str_four);
-                    ESOS_TASK_WAIT_ON_SEND_STRING(str_eight);
-                    ESOS_TASK_WAIT_ON_SEND_STRING(str_sixteen);
-                    ESOS_TASK_WAIT_ON_SEND_STRING(str_thirty_two);
-                    ESOS_TASK_WAIT_ON_SEND_STRING(str_sixty_four);
                     ESOS_TASK_SIGNAL_AVAILABLE_OUT_COMM();
 
                     // wait for use input
