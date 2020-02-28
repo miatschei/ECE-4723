@@ -33,15 +33,17 @@
  */
  
 /*** I N C L U D E S *************************************************/
-#include "esos_pic24_lcd.h"
+#include "esos_pic24_lcd44780.h"
+#include "revF14.h"
 
 /*** T H E   C O D E *************************************************/
 void __esos_lcd44780_pic24_config ( void )
 {
     // Set up the hardware aspects of the HWxxx interface of the LCD module service
     //    direction, thresholds, etc beyond what is already done in esos_lcd44780_config()
-
-
+	LCD44780_E_CONFIG();
+    LCD44780_RW_CONFIG();
+    LCD44780_RS_CONFIG();
 }
 
 void __esos_lcd44780_pic24_setDataPins( uint8_t u8_data) {
