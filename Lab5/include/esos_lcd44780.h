@@ -119,20 +119,20 @@ uint8_t esos_lcd44780_getChar( uint8_t u8_row, uint8_t u8_column );
 void esos_lcd44780_writeBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_data, uint8_t u8_bufflen );
 void esos_lcd44780_getBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_data, uint8_t u8_bufflen );
 void esos_lcd44780_writeString( uint8_t u8_row, uint8_t u8_column, char *psz_data );
-void esos_lcd44780_setCursorDisplay( BOOL u8_state );
-BOOL esos_lcd44780_getCursorDisplay( void );
-void esos_lcd44780_setCursorBlink( BOOL u8_state );
-BOOL esos_lcd44780_getCursorBlink( void );
-void esos_lcd44780_setDisplayVisible( BOOL u8_state );
-BOOL esos_lcd44780_getDisplayVisible( void );
+void esos_lcd44780_setCursorDisplay( bool u8_state );
+bool esos_lcd44780_getCursorDisplay( void );
+void esos_lcd44780_setCursorBlink( bool u8_state );
+bool esos_lcd44780_getCursorBlink( void );
+void esos_lcd44780_setDisplayVisible( bool u8_state );
+bool esos_lcd44780_getDisplayVisible( void );
 void esos_lcd44780_setCustomChar( uint8_t u8_charSlot, uint8_t *pu8_charData );
 void esos_lcd44780_getCustomChar( uint8_t u8_charSlot, uint8_t *pu8_charData );
-BOOL esos_lcd44780_isCurrent( void );
+bool esos_lcd44780_isCurrent( void );
 
 ESOS_USER_TASK( __esos_lcd44780_service );
 ESOS_CHILD_TASK( __esos_task_wait_lcd44780_while_busy  );
-ESOS_CHILD_TASK(__esos_lcd44780_write_u8, uint8_t u8_data, BOOL b_isData, BOOL b_useBusyFlag);
-ESOS_CHILD_TASK(__esos_lcd44780_read_u8, uint8_t *pu8_data, BOOL b_isData, BOOL b_useBusyFlag);
+ESOS_CHILD_TASK(__esos_lcd44780_write_u8, uint8_t u8_data, bool b_isData, bool b_useBusyFlag);
+ESOS_CHILD_TASK(__esos_lcd44780_read_u8, uint8_t *pu8_data, bool b_isData, bool b_useBusyFlag);
 
 
 #endif
