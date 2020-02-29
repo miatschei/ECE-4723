@@ -42,6 +42,7 @@
 
 /* I N C L U D E S **********************************************************/
 #include <esos_lcd44780.h>
+#include "revF14.h"
 
 /* HW-SPECIFIC MACROS *******************************************************/
 #define  __esos_lcd44780_hw_config		__esos_lcd44780_pic24_config
@@ -55,12 +56,12 @@
 #define  __esos_lcd44780_hw_configDataPinsAsOutput \
     __esos_lcd44780_pic24_configDataPinsAsOutput
 
-#define  __ESOS_LCD44780_HW_SET_E_HIGH          __ESOS_LCD44780_PIC24_SET_E_HIGH       // E=1
-#define  __ESOS_LCD44780_HW_SET_E_LOW           __ESOS_LCD44780_PIC24_SET_E_LOW        // E=0
-#define  __ESOS_LCD44780_HW_SET_RW_READ         __ESOS_LCD44780_PIC24_SET_RW_READ      // RW=1
-#define  __ESOS_LCD44780_HW_SET_RW_WRITE        __ESOS_LCD44780_PIC24_SET_RW_WRITE     // RW=0
-#define  __ESOS_LCD44780_HW_SET_RS_REGISTERS    __ESOS_LCD44780_PIC24_SET_RS_REGISTERS // RS=0
-#define  __ESOS_LCD44780_HW_SET_RS_DATA         __ESOS_LCD44780_PIC24_SET_RS_DATA      // RS=1
+#define  __ESOS_LCD44780_HW_SET_E_HIGH          (LCD44780_E = 1)      // E=1
+#define  __ESOS_LCD44780_HW_SET_E_LOW           (LCD44780_E = 0)         // E=0
+#define  __ESOS_LCD44780_HW_SET_RW_READ         (LCD44780_RW = 1)       // RW=1
+#define  __ESOS_LCD44780_HW_SET_RW_WRITE        (LCD44780_E = 0)      // RW=0
+#define  __ESOS_LCD44780_HW_SET_RS_REGISTERS    (LCD44780_RS = 1)  // RS=0
+#define  __ESOS_LCD44780_HW_SET_RS_DATA         (LCD44780_RS = 0)       // RS=1
 
 #define  __ESOS_LCD44780_HW_SET_D0              __ESOS_LCD44780_PIC24_SET_D0
 #define  __ESOS_LCD44780_HW_CLEAR_D0            __ESOS_LCD44780_PIC24_CLEAR_D0

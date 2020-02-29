@@ -98,6 +98,7 @@
     ESOS_TASK_SPAWN_AND_WAIT( th_lcd44780_child, __esos_lcd44780_read_u8, u8_addr, TRUE, TRUE ); \
 } while(0)
 
+
 /* S T R U C T U R E S ******************************************************/
 typedef struct {
 	uint8_t au8_data[8];
