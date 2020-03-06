@@ -66,18 +66,24 @@ void __esos_lcd44780_pic24_config ( void )
 void __esos_lcd44780_pic24_setDataPins( uint8_t u8_data) {
 	// write the hardware-specific code to take the u8_data passed in
 	// and place it on the appropriate data pins
+
+	// differs depending if nibble mode or not
 	
 }
 
 uint8_t __esos_lcd44780_pic24_getDataPins( void ) {
 	// write the hardware-specific code to read the appropriate data pins
 	// and create the uint8 data to return to the caller
+
+	// differs depending if nibble mode or not
 	
 }
 
 void __esos_lcd44780_pic24_configDataPinsAsInput( void ) {
 	// write the hardware-specific code to set the LCD character module
 	// data pins to be "inputs" to prepare for a read of the LCD module
+
+	// differs depending if nibble mode or not
 	
 }
 
@@ -85,4 +91,5 @@ void __esos_lcd44780_pic24_configDataPinsAsOutput( void ) {
 	// write the hardware-specific code to set the LCD character module
 	// data pins to be "outputs" to prepare for a write to the LCD module
 	
+	// differs depending if nibble mode or not
 }

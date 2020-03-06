@@ -27,8 +27,8 @@
  *
  */
 
-#ifndef ESOS_pic24_LCD_H
-#define ESOS_pic24_LCD_H
+#ifndef ESOS_pic24_LCD44780_H
+#define ESOS_pic24_LCD44780_H
 
 /**
  * \addtogroup ESOS_Task_LCD_Service
@@ -60,8 +60,8 @@
 #define  __ESOS_LCD44780_HW_SET_E_LOW           (LCD44780_E = 0)         // E=0
 #define  __ESOS_LCD44780_HW_SET_RW_READ         (LCD44780_RW = 1)       // RW=1
 #define  __ESOS_LCD44780_HW_SET_RW_WRITE        (LCD44780_E = 0)      // RW=0
-#define  __ESOS_LCD44780_HW_SET_RS_REGISTERS    (LCD44780_RS = 1)  // RS=0
-#define  __ESOS_LCD44780_HW_SET_RS_DATA         (LCD44780_RS = 0)       // RS=1
+#define  __ESOS_LCD44780_HW_SET_RS_REGISTERS    (LCD44780_RS = 0)  // RS=0
+#define  __ESOS_LCD44780_HW_SET_RS_DATA         (LCD44780_RS = 1)       // RS=1
 
 #define  __ESOS_LCD44780_HW_SET_D0              __ESOS_LCD44780_PIC24_SET_D0
 #define  __ESOS_LCD44780_HW_CLEAR_D0            __ESOS_LCD44780_PIC24_CLEAR_D0
