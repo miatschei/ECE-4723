@@ -67,6 +67,7 @@ void __esos_lcd44780_pic24_setDataPins( uint8_t u8_data) {
 	// write the hardware-specific code to take the u8_data passed in
 	// and place it on the appropriate data pins
 	
+	
 }
 
 uint8_t __esos_lcd44780_pic24_getDataPins( void ) {
@@ -78,11 +79,25 @@ uint8_t __esos_lcd44780_pic24_getDataPins( void ) {
 void __esos_lcd44780_pic24_configDataPinsAsInput( void ) {
 	// write the hardware-specific code to set the LCD character module
 	// data pins to be "inputs" to prepare for a read of the LCD module
-	
+	LCD44780_D0_CONFIG_INPUT();
+	LCD44780_D1_CONFIG_INPUT();
+	LCD44780_D2_CONFIG_INPUT();
+	LCD44780_D3_CONFIG_INPUT();
+	LCD44780_D4_CONFIG_INPUT();
+	LCD44780_D5_CONFIG_INPUT();
+	LCD44780_D6_CONFIG_INPUT();
+	LCD44780_D7_CONFIG_INPUT();	
 }
 
 void __esos_lcd44780_pic24_configDataPinsAsOutput( void ) {
 	// write the hardware-specific code to set the LCD character module
 	// data pins to be "outputs" to prepare for a write to the LCD module
-	
+	LCD44780_D0_CONFIG_OUTPUT();
+	LCD44780_D1_CONFIG_OUTPUT();
+	LCD44780_D2_CONFIG_OUTPUT();
+	LCD44780_D3_CONFIG_OUTPUT();
+	LCD44780_D4_CONFIG_OUTPUT();
+	LCD44780_D5_CONFIG_OUTPUT();
+	LCD44780_D6_CONFIG_OUTPUT();
+	LCD44780_D7_CONFIG_OUTPUT();	
 }
