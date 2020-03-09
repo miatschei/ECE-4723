@@ -44,45 +44,61 @@ void __esos_lcd44780_pic24_config ( void )
 	LCD44780_E_CONFIG();
     LCD44780_RW_CONFIG();
     LCD44780_RS_CONFIG();
-
-	// LCD44780_D0_CONFIG_INPUT();
-	// LCD44780_D0_CONFIG_OUTPUT();
-	// LCD44780_D1_CONFIG_INPUT();
-	// LCD44780_D1_CONFIG_OUTPUT();
-	// LCD44780_D2_CONFIG_INPUT();
-	// LCD44780_D2_CONFIG_OUTPUT();
-	// LCD44780_D3_CONFIG_INPUT();
-	// LCD44780_D3_CONFIG_OUTPUT();
-	// LCD44780_D4_CONFIG_INPUT();
-	// LCD44780_D4_CONFIG_OUTPUT();
-	// LCD44780_D5_CONFIG_INPUT();
-	// LCD44780_D5_CONFIG_OUTPUT();
-	// LCD44780_D6_CONFIG_INPUT();
-	// LCD44780_D6_CONFIG_OUTPUT();
-	// LCD44780_D7_CONFIG_INPUT();
-	// LCD44780_D7_CONFIG_OUTPUT();
 }
 
 void __esos_lcd44780_pic24_setDataPins( uint8_t u8_data) {
 	// write the hardware-specific code to take the u8_data passed in
 	// and place it on the appropriate data pins
-	
-	
+	uint8_t u8_bitm = 0x01;
+	if(LCD44780_NIBBLE_MODE){
+		if(u8_bitm & u8_data) __ESOS_LCD44780_HW_SET_D4;
+		else __ESOS_LCD44780_HW_CLEAR_D4;
+		if((u8_bitm << 1) & u8_data) __ESOS_LCD44780_HW_SET_D5;
+		else __ESOS_LCD44780_HW_CLEAR_D5;
+		if((u8_bitm << 2) & u8_data) __ESOS_LCD44780_HW_SET_D6;
+		else __ESOS_LCD44780_HW_CLEAR_D6;
+		if((u8_bitm << 3) & u8_data) __ESOS_LCD44780_HW_SET_D7;
+		else __ESOS_LCD44780_HW_CLEAR_D7;
+	} else {
+		if( u8_bitm & u8_data)__ESOS_LCD44780_HW_SET_D0;
+		else __ESOS_LCD44780_HW_CLEAR_D0;
+		if((u8_bitm << 1) & u8_data) __ESOS_LCD44780_HW_SET_D1;
+		else __ESOS_LCD44780_HW_CLEAR_D1;
+		if((u8_bitm << 2) & u8_data) __ESOS_LCD44780_HW_SET_D2;
+		else __ESOS_LCD44780_HW_CLEAR_D2;
+		if((u8_bitm << 3) & u8_data) __ESOS_LCD44780_HW_SET_D3;
+		else __ESOS_LCD44780_HW_CLEAR_D3;
+		if((u8_bitm << 4) & u8_data) __ESOS_LCD44780_HW_SET_D4;
+		else __ESOS_LCD44780_HW_CLEAR_D4;
+		if((u8_bitm << 5) & u8_data) __ESOS_LCD44780_HW_SET_D5;
+		else __ESOS_LCD44780_HW_CLEAR_D5;
+		if((u8_bitm << 6) & u8_data) __ESOS_LCD44780_HW_SET_D6;
+		else __ESOS_LCD44780_HW_CLEAR_D6;
+		if((u8_bitm << 7) & u8_data) __ESOS_LCD44780_HW_SET_D7;
+		else __ESOS_LCD44780_HW_CLEAR_D7;
+	}	
 }
 
 uint8_t __esos_lcd44780_pic24_getDataPins( void ) {
 	// write the hardware-specific code to read the appropriate data pins
 	// and create the uint8 data to return to the caller
-	
+	if(LCD44780_NIBBLE_MODE){
+		return (__ESOS_LCD44780_HW_GET_D7 << 3) | (__ESOS_LCD44780_HW_GET_D6 << 2) | (__ESOS_LCD44780_HW_GET_D5 << 1) | (__ESOS_LCD44780_HW_GET_D4);
+	} else {
+		return (__ESOS_LCD44780_HW_GET_D7 << 7) | (__ESOS_LCD44780_HW_GET_D6 << 6) | (__ESOS_LCD44780_HW_GET_D5 << 5) | (__ESOS_LCD44780_HW_GET_D4 << 4) | 
+			   (__ESOS_LCD44780_HW_GET_D3 << 3) | (__ESOS_LCD44780_HW_GET_D2 << 2) | (__ESOS_LCD44780_HW_GET_D1 << 1) | (__ESOS_LCD44780_HW_GET_D0);
+	}
 }
 
 void __esos_lcd44780_pic24_configDataPinsAsInput( void ) {
 	// write the hardware-specific code to set the LCD character module
 	// data pins to be "inputs" to prepare for a read of the LCD module
-	LCD44780_D0_CONFIG_INPUT();
-	LCD44780_D1_CONFIG_INPUT();
-	LCD44780_D2_CONFIG_INPUT();
-	LCD44780_D3_CONFIG_INPUT();
+	if(!LCD44780_NIBBLE_MODE){
+		LCD44780_D0_CONFIG_INPUT();
+		LCD44780_D1_CONFIG_INPUT();
+		LCD44780_D2_CONFIG_INPUT();
+		LCD44780_D3_CONFIG_INPUT();
+	}
 	LCD44780_D4_CONFIG_INPUT();
 	LCD44780_D5_CONFIG_INPUT();
 	LCD44780_D6_CONFIG_INPUT();
@@ -92,10 +108,12 @@ void __esos_lcd44780_pic24_configDataPinsAsInput( void ) {
 void __esos_lcd44780_pic24_configDataPinsAsOutput( void ) {
 	// write the hardware-specific code to set the LCD character module
 	// data pins to be "outputs" to prepare for a write to the LCD module
-	LCD44780_D0_CONFIG_OUTPUT();
-	LCD44780_D1_CONFIG_OUTPUT();
-	LCD44780_D2_CONFIG_OUTPUT();
-	LCD44780_D3_CONFIG_OUTPUT();
+	if(!LCD44780_NIBBLE_MODE){
+		LCD44780_D0_CONFIG_OUTPUT();
+		LCD44780_D1_CONFIG_OUTPUT();
+		LCD44780_D2_CONFIG_OUTPUT();
+		LCD44780_D3_CONFIG_OUTPUT();
+	}
 	LCD44780_D4_CONFIG_OUTPUT();
 	LCD44780_D5_CONFIG_OUTPUT();
 	LCD44780_D6_CONFIG_OUTPUT();

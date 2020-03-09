@@ -102,6 +102,8 @@
                          }
 
 // LCD Defines
+#define LCD44780_NIBBLE_MODE        0
+
 #define LCD44780_E (_LATD10)
 #define LCD44780_E_CONFIG()                                                                                            \
     {                                                                                                                  \
