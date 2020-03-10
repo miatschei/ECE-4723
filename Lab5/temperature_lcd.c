@@ -9,6 +9,9 @@ ESOS_USER_TASK(dummy){
     ESOS_TASK_BEGIN();
     
     while(TRUE){
+        esos_lcd44780_clearScreen();
+        esos_lcd44780_writeString(0, 0, "test");
+        esos_lcd44780_writeString(1, 0, "test");
         ESOS_TASK_YIELD();
     }
     ESOS_TASK_END();
