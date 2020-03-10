@@ -15,6 +15,7 @@ ESOS_USER_TASK(dummy){
 }
 
 void user_init(){
-
+    esos_lcd44780_init();
+    esos_lcd44780_configDisplay();
     esos_RegisterTask(dummy);
 }

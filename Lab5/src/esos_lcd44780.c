@@ -39,23 +39,23 @@
 
 // Main data structure for updating lcd44780
 struct {
-	bool b_cursorPositionNeedsUpdate;
+	BOOL b_cursorPositionNeedsUpdate;
 	uint8_t u8_cursorRow;
 	uint8_t u8_cursorCol;
 
-	bool b_cursorShownNeedsUpdate;
-	bool b_cursorShown;
+	BOOL b_cursorShownNeedsUpdate;
+	BOOL b_cursorShown;
 
-	bool b_cursorBlinkNeedsUpdate;
-	bool b_cursorBlink;
+	BOOL b_cursorBlinkNeedsUpdate;
+	BOOL b_cursorBlink;
 
-	bool b_displayVisibleNeedsUpdate;
-	bool b_displayVisible;
+	BOOL b_displayVisibleNeedsUpdate;
+	BOOL b_displayVisible;
 
-	bool ab_lcdBufferNeedsUpdate[ESOS_LCD44780_MEM_HEIGHT][ESOS_LCD44780_MEM_WIDTH];
+	BOOL ab_lcdBufferNeedsUpdate[ESOS_LCD44780_MEM_HEIGHT][ESOS_LCD44780_MEM_WIDTH];
 	char aac_lcdBuffer[ESOS_LCD44780_MEM_HEIGHT][ESOS_LCD44780_MEM_WIDTH];
 
-	bool ab_customCharNeedsUpdate[ESOS_LCD44780_NUM_CUSTOM_CHARS];
+	BOOL ab_customCharNeedsUpdate[ESOS_LCD44780_NUM_CUSTOM_CHARS];
 	esos_lcd44780_char_t ast_customChar[ESOS_LCD44780_NUM_CUSTOM_CHARS];
 } esos_lcd44780_vars;
 
@@ -230,7 +230,8 @@ void esos_lcd44780_writeBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_
 {
     // Write u8_bufflen characters from pu8_data to (u8_row,u8_column)
 	// TODO:  Write hardware-independent code here
-	for(int i = 0; i < u8_bufflen; i++){
+	int i;
+	for(i = 0; i < u8_bufflen; i++){
 		esos_lcd44780_writeChar(u8_row, u8_column + i, pu8_data[i]);
 	}
 }
@@ -239,7 +240,8 @@ void esos_lcd44780_getBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_da
 {
     // Return pu8_data with u8_bufflen characters currently displayed beginning at (u8_row,u8_column)
 	// TODO:  Write hardware-independent code here
-	for(int i = 0; i < u8_bufflen; i++){
+	int i;
+	for(i = 0; i < u8_bufflen; i++){
 		pu8_data[i] = esos_lcd44780_getChar(u8_row, u8_column+i);
 	}
 }
@@ -255,7 +257,7 @@ void esos_lcd44780_writeString( uint8_t u8_row, uint8_t u8_column, char *psz_dat
 	}
 }
 
-void esos_lcd44780_setCursorDisplay( bool u8_state )
+void esos_lcd44780_setCursorDisplay( BOOL u8_state )
 {
     // Set cursor display state to u8_state
 	// TODO:  Write hardware-independent code here
@@ -265,31 +267,31 @@ void esos_lcd44780_setCursorDisplay( bool u8_state )
 	}
 }
 
-bool esos_lcd44780_getCursorDisplay( void )
+BOOL esos_lcd44780_getCursorDisplay( void )
 {
     // Return cursor display state
 	// TODO:  Write hardware-independent code here
 	return esos_lcd44780_vars.b_cursorShown;
 }
 
-void esos_lcd44780_setCursorBlink( bool u8_state )
+void esos_lcd44780_setCursorBlink( BOOL u8_state )
 {
     // Set cursor blink state to u8_state
 	// TODO:  Write hardware-independent code here
-	if(u8_stte != esos_lcd44780_getCursorBlink()){
+	if(u8_state != esos_lcd44780_getCursorBlink()){
 		esos_lcd44780_vars.b_cursorBlink = u8_state;
 		esos_lcd44780_vars.b_cursorBlinkNeedsUpdate = TRUE;
 	}
 }
 
-bool esos_lcd44780_getCursorBlink( void )
+BOOL esos_lcd44780_getCursorBlink( void )
 {
     // Return cursor blink state
 	// TODO:  Write hardware-independent code here
 	return esos_lcd44780_vars.b_cursorBlink;
 }
 
-void esos_lcd44780_setDisplayVisible( bool u8_state )
+void esos_lcd44780_setDisplayVisible( BOOL u8_state )
 {
     // Set display visible state to u8_state
 	// TODO:  Write hardware-independent code here
@@ -299,7 +301,7 @@ void esos_lcd44780_setDisplayVisible( bool u8_state )
 	}
 }
 
-bool esos_lcd44780_getDisplayVisible( void )
+BOOL esos_lcd44780_getDisplayVisible( void )
 {
     // Return display visible state
 	// TODO:  Write hardware-independent code here
@@ -310,7 +312,8 @@ void esos_lcd44780_setCustomChar( uint8_t u8_charSlot, uint8_t *pu8_charData )
 {
     // Set custom character memory for u8_charSlot to data in pu8_charData
 	// TODO:  Write hardware-independent code here
-	for(int i = 0; i < 8; i++){
+	int i;
+	for(i = 0; i < 8; i++){
 		esos_lcd44780_vars.ast_customChar[u8_charSlot].au8_data[i] = pu8_charData[i];
 	}
 	esos_lcd44780_vars.ab_customCharNeedsUpdate[u8_charSlot] = TRUE;
@@ -320,12 +323,13 @@ void esos_lcd44780_getCustomChar( uint8_t u8_charSlot, uint8_t *pu8_charData )
 {
     // Return pu8_charData with custom character memory for u8_charSlot
 	// TODO:  Write hardware-independent code here
-	for(int i = 0; i < 8; i++){
+	int i;
+	for(i = 0; i < 8; i++){
 		pu8_charData[i] = esos_lcd44780_vars.ast_customChar[u8_charSlot].au8_data[i];
 	}
 }
 
-bool esos_lcd44780_isCurrent( void )
+BOOL esos_lcd44780_isCurrent( void )
 {
 	uint8_t u8_row, u8_column;
 
@@ -352,7 +356,7 @@ bool esos_lcd44780_isCurrent( void )
 	return TRUE;
 }
 
-ESOS_CHILD_TASK(__esos_lcd44780_read_u8, uint8_t *pu8_data, bool b_isData, bool b_useBusyFlag)
+ESOS_CHILD_TASK(__esos_lcd44780_read_u8, uint8_t *pu8_data, BOOL b_isData, BOOL b_useBusyFlag)
 {
 	ESOS_TASK_BEGIN();
 
@@ -381,7 +385,7 @@ ESOS_CHILD_TASK(__esos_lcd44780_read_u8, uint8_t *pu8_data, bool b_isData, bool 
 	ESOS_TASK_END();
 }
 
-ESOS_CHILD_TASK(__esos_lcd44780_write_u8, uint8_t u8_data, bool b_isData, bool b_useBusyFlag)
+ESOS_CHILD_TASK(__esos_lcd44780_write_u8, uint8_t u8_data, BOOL b_isData, BOOL b_useBusyFlag)
 {
 	ESOS_TASK_BEGIN();
 
@@ -413,7 +417,7 @@ ESOS_CHILD_TASK(__esos_lcd44780_write_u8, uint8_t u8_data, bool b_isData, bool b
 
 ESOS_CHILD_TASK( __esos_task_wait_lcd44780_while_busy  )
 {
-    static bool b_hw_lcd_isBusy = FALSE;
+    static BOOL b_hw_lcd_isBusy = FALSE;
     
     ESOS_TASK_BEGIN();
     
