@@ -1,0 +1,98 @@
+ENUM LISTS:
+16 CH
+ESOS_SENSOR_CH00   0x00
+...
+ESOS_SENSOR_CH15   0x0F
+
+9 VREF
+ESOS_SENSOR_VREF_1V0   0x00
+...
+ESOS_SENSOR_VREF_5V0   0x08
+
+ESOS_SENSOR_FORMAT_BITS   0x00
+   "raw" bits
+ESOS_SENSOR_FORMAT_VOLTAGE 0x80
+   format as integer representing the number of 0.1 mV
+ESOS_SENSOR_FORMAT_PERCENT 0x40
+   interger percentage on 0-100% scale
+
+ESOS_SENSOR_ONE_SHOT   0x00
+
+6 AVG options
+ESOS_SENSOR_AVG2   0x01
+...
+ESOS_SENSOR_AVG64   0x06
+
+6 MIN options
+ESOS_SENSOR_MIN2   0x21
+...
+ESOS_SENSOR_MIN64   0x26
+
+6 MAX options
+ESOS_SENSOR_MAX2   0x41
+...
+ESOS_SENSOR_MAX64   0x46
+
+6 MED options
+ESOS_SENSOR_MEDIAN2   0x81
+...
+ESOS_SENSOR_MEDIAN64   0x86
+-------------------------------------
+TASK 1:
+use of LED 3 (heart), SW1, SW2
+
+TASK 2:
+use of LED 3 (heart), SW1, SW2, SW3
+same functionality as T1 but add functionality for SW3
+Q1: processing mode
+Q2: number samples
+selects appropriate function to use based on Qs
+
+TASK 3:
+switch from use of potentiometer to temp sensor LM60 - same as T2 but different input?
+***see what data the temp sensor is formatted as - documentation and tests***
+----------------------------------------------------------------------------------------
+INTEGER METHOD:
+convert ADC reading into appropriate number representing the number of tenths of millivolts (0.1 mV)
+PIC24 provides some hardware instructions for integer multiplication and some division operation primitives
+------------------------------------------------------------------------------------------------------------------------
+ADC: https://courses.ece.msstate.edu/ece3724/main_pic24/datasheets/70621c.pdf
+setup of ADC starting on page 7
+integer operation mode available, as well as signed fractional, fractional, and signed integer
+bit 15 controls if module is on/off
+4 CON registers - 1: sampling; 2: VREF; 3: timing; 4: allocating buffer space
+look into sample clock settings***
+16.3.1 SAMPLE TIME
+example code pg 20, 22
+16.4.4 VOLTAGE REF SELECTION
+pg 31: ADC Output Format
+code pg 38, 40, 42
+-------------------------
+functions to handle:
+mean
+median
+max
+min
+
+conversions?
+-------------
+detailed TO DO list:
+PRELIM
+ESOS SENSOR SERVICE API (4.1.1)
+
+T1
+1. heartbeat
+2. get ADC configured and set to read POT - ONE SHOT functionality - print to screen
+3. SW1 - print only when pushed - single print per push? - HEX
+4. SW2 - print every second until SW2 pressed again or SW1 - format not specified
+
+T2
+1. functions for procesing modes (one shot done; to do: avg, min, max, median)
+2. start with sampling just 2 and build up based on that for each mode
+*store values in array, reset array after displaying data on screen?
+***re-read through doc for clarification***
+3. UI
+
+T3
+1. modify to handle temperature instead of voltage - documentation for formatting???
+*likely need some sort of conversion method

@@ -51,31 +51,31 @@ void __esos_lcd44780_pic24_setDataPins( uint8_t u8_data) {
 	// and place it on the appropriate data pins
 	uint8_t u8_bitm = 0x01;
 	if(LCD44780_NIBBLE_MODE){
-		if(u8_bitm & u8_data) __ESOS_LCD44780_HW_SET_D4();
-		else __ESOS_LCD44780_HW_CLEAR_D4();
-		if((u8_bitm << 1) & u8_data) __ESOS_LCD44780_HW_SET_D5();
-		else __ESOS_LCD44780_HW_CLEAR_D5();
-		if((u8_bitm << 2) & u8_data) __ESOS_LCD44780_HW_SET_D6();
-		else __ESOS_LCD44780_HW_CLEAR_D6();
-		if((u8_bitm << 3) & u8_data) __ESOS_LCD44780_HW_SET_D7();
-		else __ESOS_LCD44780_HW_CLEAR_D7();
+		if(u8_bitm & u8_data) LCD44780_D4 = 1;
+		else LCD44780_D4 = 0;
+		if((u8_bitm << 1) & u8_data) LCD44780_D5 = 1;
+		else LCD44780_D5 = 0;
+		if((u8_bitm << 2) & u8_data) LCD44780_D6 = 1;
+		else LCD44780_D6 = 0;
+		if((u8_bitm << 3) & u8_data) LCD44780_D7 = 1;
+		else LCD44780_D7 = 0;
 	} else {
-		if( u8_bitm & u8_data)__ESOS_LCD44780_HW_SET_D0();
-		else __ESOS_LCD44780_HW_CLEAR_D0();
-		if((u8_bitm << 1) & u8_data) __ESOS_LCD44780_HW_SET_D1();
-		else __ESOS_LCD44780_HW_CLEAR_D1();
-		if((u8_bitm << 2) & u8_data) __ESOS_LCD44780_HW_SET_D2();
-		else __ESOS_LCD44780_HW_CLEAR_D2();
-		if((u8_bitm << 3) & u8_data) __ESOS_LCD44780_HW_SET_D3();
-		else __ESOS_LCD44780_HW_CLEAR_D3();
-		if((u8_bitm << 4) & u8_data) __ESOS_LCD44780_HW_SET_D4();
-		else __ESOS_LCD44780_HW_CLEAR_D4();
-		if((u8_bitm << 5) & u8_data) __ESOS_LCD44780_HW_SET_D5();
-		else __ESOS_LCD44780_HW_CLEAR_D5();
-		if((u8_bitm << 6) & u8_data) __ESOS_LCD44780_HW_SET_D6();
-		else __ESOS_LCD44780_HW_CLEAR_D6();
-		if((u8_bitm << 7) & u8_data) __ESOS_LCD44780_HW_SET_D7();
-		else __ESOS_LCD44780_HW_CLEAR_D7();
+		if( u8_bitm & u8_data) LCD44780_D0 = 1;
+		else LCD44780_D0 = 0;
+		if((u8_bitm << 1) & u8_data) LCD44780_D1 = 1;
+		else LCD44780_D1 = 0;
+		if((u8_bitm << 2) & u8_data) LCD44780_D2 = 1;
+		else LCD44780_D2 = 0;
+		if((u8_bitm << 3) & u8_data) LCD44780_D3 = 1;
+		else LCD44780_D3 = 0;
+		if((u8_bitm << 4) & u8_data) LCD44780_D4 = 1;
+		else LCD44780_D4 = 0;
+		if((u8_bitm << 5) & u8_data) LCD44780_D5 = 1;
+		else LCD44780_D5 = 0;
+		if((u8_bitm << 6) & u8_data) LCD44780_D6 = 1;
+		else LCD44780_D6 = 0;
+		if((u8_bitm << 7) & u8_data) LCD44780_D7 = 1;
+		else LCD44780_D7 = 0;
 	}	
 }
 

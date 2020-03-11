@@ -218,13 +218,13 @@ void esos_lcd44780_setCursor( uint8_t u8_row, uint8_t u8_column )
 
 void esos_lcd44780_writeChar( uint8_t u8_row, uint8_t u8_column, uint8_t u8_data )
 {
-	esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column] = u8_data;
-	esos_lcd44780_vars.ab_lcdBufferNeedsUpdate[u8_row][u8_column] = TRUE;
+	esos_lcd44780_vars.aac_lcdBuffer[u8_row % ESOS_LCD44780_MEM_HEIGHT][u8_column % ESOS_LCD44780_MEM_WIDTH] = u8_data;
+	esos_lcd44780_vars.ab_lcdBufferNeedsUpdate[u8_row % ESOS_LCD44780_MEM_HEIGHT][u8_column % ESOS_LCD44780_MEM_WIDTH] = TRUE;
 }
 
 uint8_t esos_lcd44780_getChar( uint8_t u8_row, uint8_t u8_column )
 {
-	return esos_lcd44780_vars.aac_lcdBuffer[u8_row][u8_column];
+	return esos_lcd44780_vars.aac_lcdBuffer[u8_row % ESOS_LCD44780_MEM_HEIGHT][u8_column % ESOS_LCD44780_MEM_WIDTH];
 }
 
 void esos_lcd44780_writeBuffer( uint8_t u8_row, uint8_t u8_column, uint8_t *pu8_data, uint8_t u8_bufflen )
