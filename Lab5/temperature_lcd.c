@@ -44,7 +44,7 @@ ESOS_USER_TASK(adc_handle){
             adc32_out = (adc32_out - 424000)/625;
             float temp32_C = adc32_out / 100;
             
-            sprintf(str_temp, "%.1fC", temp32_C);
+            sprintf(str_temp, "%.1fC", temp32_C); // write string to variable
             ESOS_SENSOR_CLOSE();
 
             // determine bar
@@ -135,11 +135,7 @@ ESOS_USER_TASK(adc_handle){
                 else if(u16_adcval <= 4095) char_slide_7 = SLIDER5;
             }
 
-            // 128 to 255
-
-
-
-            sprintf(str_pot, "pot 0x%02x", u16_adcval);
+            sprintf(str_pot, "pot 0x%02x", u16_adcval); // write string to variable
             
             esos_lcd44780_clearScreen();
             esos_lcd44780_writeString(0, 0, str_pot);
@@ -153,7 +149,6 @@ ESOS_USER_TASK(adc_handle){
             esos_lcd44780_writeChar(1, 7, char_slide_7);
 
         }
-        //ESOS_TASK_WAIT_TICKS(1000); 
         ESOS_TASK_YIELD();
     }
     ESOS_TASK_END();
@@ -163,9 +158,7 @@ ESOS_USER_TASK(state_handle){
     ESOS_TASK_BEGIN();
     while(TRUE){
         ESOS_TASK_WAIT_UNTIL(SW3_PRESSED);
-        pstate = !pstate;
-        //esos_lcd44780_clearScreen();
-        //counter == rate;
+        pstate = !pstate; // change state
         ESOS_TASK_WAIT_UNTIL(SW3_RELEASED);
         ESOS_TASK_YIELD();
     }    
@@ -178,9 +171,7 @@ void user_init(){
     config_esos_uiF14();
     esos_lcd44780_init();
     esos_lcd44780_configDisplay();
-    //one_shot_state = 0;
     // Register local tasks
     esos_RegisterTask(adc_handle);
     esos_RegisterTask(state_handle);
-    //esos_RegisterTask(adc_interface);
 }
